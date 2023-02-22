@@ -1,0 +1,120 @@
+
+Reino
+
+	1 rei
+	N nobres
+
+reino geografia
+dentro do reino se relaciona as entidades
+	Reino: o pais, de onde a familai real domina, dividido em
+		
+		*nome: nome do reino
+		*rank: archducado, principado, reino e emprerio
+		*TEM_familia real: 1-N  dinastia que controla
+		
+	Região: região dominada por um grande nobre, ou familia real, dentro dela que ficam os feudos.
+		*nome: nome da região
+		*TEM_nobre: familia que coverna entre duke e marques
+		*localização: onde fica, oeste, centro oeste, etc.
+		*descrição: descrição basica, como relevo, pontos fortes, historia
+		
+	feudos: demarcação de terar, onde uma familia nobre tem o seu dominio
+		*nome:
+		*tamanho:
+		*TEM_noble: familia que controla
+		*FK_região: saber a região
+		*descrição: descrição basica, como relevo, pontos fortes, historia
+		
+	assentamento: local onde pessoas resisdem, podem ser: vilas, cidades, municipios e metropole
+		*nome: nome da ciade,vila etc
+		*Tipo: vila, cidade. fortaleza.
+		*população: quantidade
+		*descrição:
+		*economia: M-N já que muitas cidades podem ter a mesma economia.
+		
+	Zonas: zonas de enteresse, onde tem recuros, ou monstros, geralmente estão proximos de assentamentos.
+		*nome: 
+		*recursos: M-N minas, plantaçoes arvores.
+		*Monstros: M-N
+		*Descrição:
+		*Assentamento: 1-n
+		*feudo: 1-N
+		*Região:1-n
+		*kingdom: 1-n
+
+
+reino Geopolitica
+	Nobres
+		*casa: o nome da familia
+		*rank: M-N rank noble, terceira table com pagina e ano
+		*descrição: drecrever geografia, economia etc.
+		*membros: 1-n pessoas que fazem parte da casa
+		*feitos: 1-N os feitos da casa
+		*valasso: 1-N vassalos que serve a casa.
+
+	Rank
+		*rank:
+			knight, baron, viscount, earl, marquis, duke, principe, king
+		*descrição:
+
+Pessoas
+	pessoa
+		*nome
+		*idade
+		*filiação: M-N
+		*rank : 
+		*TEM_class: 1-n
+		*TEM_atributos: 1-n
+		
+	vassal:
+		*fk_reino:
+		*fk_noble_housef:
+	
+	atributos
+		*STR
+		*AGI
+		*DEX
+		*RES
+		*CONS
+		*INT
+		*MANA
+		*CONTROL
+		*PERCEPÇÂO
+	classe
+		*nome
+		*TEM_rank: 1n
+		*bonus:
+	
+	rank_classe
+		normal, incomum, rara, ancia, legendaria, divina
+			
+	ocupação
+		*FK_rank_militar:
+		*FK_pessoa:
+		*FK_profissão
+		*book:
+		*page:
+		
+	Profissão
+		*rank
+		*nome
+	
+	rank_arm
+		*nome
+		*descricao
+		
+
+	fatos notaveis
+		*livro
+		*pagina
+		*data
+		*região
+		*cidade
+		*local
+
+
+região
+	n-m monstros
+	recursos
+	região
+	cidade

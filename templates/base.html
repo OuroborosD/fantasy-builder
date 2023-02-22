@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title  %}
+    {% endblock title  %}
+</head>
+<body>
+    <header>
+        <a href="{% url 'home' %}">home</a>
+        <a href="{% url 'teste' %}">teste</a>
+        <a href="{% url 'character' %}">personagem</a>
+    </header>
+     <div>
+        {% block content  %}
+        {% endblock content  %}
+     </div>
+   
+</body>
+</html>
