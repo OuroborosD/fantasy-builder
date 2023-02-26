@@ -4,26 +4,38 @@
 <title>characters</title>
 {% endblock title %}
 
+{% block nav %}
+<li class="nav-item active">
+    <a class="nav-link" href="{% url 'character-add' %}">criar novo personagem <span class="sr-only">(current)</span></a>
+</li>
+{% endblock nav %}
+
 
 {% block content %}
-<table>
-    <thead>
+<h1 class="display-3 text-center">todos os personagens</h1>
+<table class="table table-striped table-bordered">
+    <thead class="thead-dark">
         <tr>
-            <th>name</th>
-            <th>birthday</th>
+
+            <th scope="col">name</th>
+            <th scope="col">birth</th>
+            <th scope="col">age</th>
+            <th scope="col">slug</th>
+
         </tr>
     </thead>
     <tbody>
-        <tr>
-            {% for character in characters_list %}
 
-            <td>{{character.name}}</td>
-            <td>{{character.birth}}</td>
+        {% for character in characters_list %}
+                <tr scope="row">
+                <td><a href="{% url 'character-page' character.pk %}">{{character.name}}</a></td>
+                <td>{{character.birth}}</td>
+                <td>{{character.age}}</td>
+                <td>{{character.get_absolute_url}}</td>
+                
 
-
-
-            {% endfor %}
-        </tr>
+                </tr>
+        {% endfor %}
     </tbody>
 </table>
 {% endblock content %}
