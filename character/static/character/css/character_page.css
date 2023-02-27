@@ -1,32 +1,95 @@
-
 /*   auxiliares*/
 
-.margin-p{
+h1,
+h2,
+h3,
+h4 {
+    text-transform: capitalize;
+}
+
+
+
+.margin-p {
     margin: 8px 4px;
 }
-.margin-m{
+
+.margin-m {
     margin: 14px 8px;
 }
 
 
-.flex{
+.flex {
     display: flex;
     justify-content: space-between;
     width: 100%;
     padding-right: 5px;
 }
 
-hr{
+hr {
     border-top: 3px solid black;
     margin: 20px 30px;
 
 }
 
 
+.destacar {
+    font-size: 22px;
+    font-style: italic;
+    font-weight: bolder;
+}
+
+.w20 {
+
+    width: 20%;
+}
+
+.w30 {
+
+    width: 30%;
+}
+
+
+.w40 {
+    width: 40%;
+}
+.w60 {
+    width: 60%;
+}
+
+.hr-div{
+    border-left: 3px solid black;
+}
+
+
+.center-title-1{
+    text-align: center;
+    margin: 30px 0px;
+    background-color: black;
+    color: white;
+}
+
+
+
+.lateral-title-p{
+    padding: 10px 4px;
+    background-color: black;
+    color: white;
+}
+
+
+
+   /*   text*/
+.descricao-p{
+    font-size: 10px;
+}
+
+   /*   text*/
+
+
 /*   auxiliares*/
 
 
-h1{
+h1 {
     font-size: 36px;
     margin-bottom: 12px;
 }
@@ -36,10 +99,9 @@ p {
 }
 
 .flex-container {
-    display: flex;   
+    display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: stretch;
     align-content: space-around;
 
 }
@@ -49,14 +111,14 @@ p {
 section {
     padding: 8px;
     margin: 8px;
-    width: 60%;
-    background-color: blue;
-    flex-grow: 2;
+    width: 100%;
+    background-color: rgba(0, 0, 255, 0.558);
     display: flex;
     flex-direction: column;
+
 }
 
-.feitos{
+.feitos {
     width: 50%;
     align-self: center;
     justify-self: center;
@@ -67,45 +129,45 @@ section {
 /*aside*/
 
 aside {
-    background-color: red;
-    width: 25%;
+    background-color: rgba(255, 0, 0, 0.705);
+    width: 30%;
     border: 4px solid black;
     margin: 8px;
-    flex-grow: 1;
     display: flex;
+    align-items:stretch;
     flex-direction: column;
-    align-items: stretch;
     
+
 }
 
 
 /*   images background-image:url(../img/cassandra.png);*/
-.image-holder{
+.image-holder {
     background-color: gray;
     display: flex;
     justify-content: center;
 
 }
 
-img{
+img {
     width: 100%;
 }
 
-.info-personagem-text{
+.info-personagem-text {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: stretch;
     padding: 0px;
 
-    
+
 }
 
-.info-list{
- border: 4px solid black;
+.info-list {
+    border: 4px solid black;
 }
 
-.title-info{
+.title-info {
     border-bottom: 4px;
     background-color: black;
     text-align: center;
@@ -113,18 +175,19 @@ img{
     font-weight: bolder;
     text-transform: capitalize;
 }
-.list-info{
+
+.list-info {
     display: flex;
     flex-direction: column;
-    justify-content:space-evenly;
+    justify-content: space-evenly;
     align-items: flex-start;
-    
+
 }
 
-.list-info li{
-   font-size: 22px;
-   padding-left: 10px;
-   text-transform: capitalize;
+.list-info li {
+    font-size: 22px;
+    padding-left: 10px;
+    text-transform: capitalize;
 
 }
 
@@ -133,29 +196,40 @@ img{
 
 /*aside*/
 
-.block{
+.block {
     padding: 10px 20px;
 }
 
 
 
-.feitos h4, .pontos{
-text-align: center;
+.feitos h4 {
+    text-align: center;
 }
 
 
-.pontos{
+.pontos {
+    text-align: center;
     font-size: 30px;
     margin: 0;
     padding: 0;
 }
 
-.display-info{
+.display-info {
     display: flex;
     justify-content: space-between;
     padding: 12px 0px;
 }
 
-.mini-info{
+.mini-info {
     font-size: 10px;
 }
+
+
+
+h3{
+    font-weight: bolder;
+    color: black;
+
+}
+
+

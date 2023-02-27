@@ -28,7 +28,7 @@
 
         {% for character in characters_list %}
                 <tr scope="row">
-                <td><a href="{% url 'character-page' character.pk %}">{{character.name}}</a></td>
+                <td><a href="{% url 'character-page' character.slug %}">{{character.name}}</a></td>
                 <td>{{character.birth}}</td>
                 <td>{{character.age}}</td>
                 <td>{{character.get_absolute_url}}</td>
