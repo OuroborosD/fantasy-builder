@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 
 {% load static %}
@@ -7,8 +6,12 @@
 <link rel="stylesheet" href="{% static 'character/css/character_page.css' %}">
 {% endblock css %}
 
+{% block nav %}
+<li class="nav-item active">
+    <a class="nav-link" href="{% url 'skill-add' c.slug %}">adicionar skill<span class="sr-only">(current)</span></a>
+</li>
+{% endblock nav %}
 
-    
 
 
 {% block content%}
@@ -17,7 +20,7 @@
         <div class="flex-container">
             <div class="block" style="width: 65%;">
                 <h1 class="center-title-1">Descrição</h1>
-                <p class="text">
+                <p class="text-l">
                     The Panda has become the symbol of WWF. The well-known panda logo of WWF originated from a panda
                     named
                     Chi Chi that was transferred from the Beijing Zoo to the London Zoo in the same year of th
@@ -27,60 +30,7 @@
                     soluta dolore. Laboriosam autem quo numquam?
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis hic illum fugiat sed sequi
                     laudantium.
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam cupiditate reprehenderit unde
-                    delectus ad, architecto laborum vero quas commodi ducimus quasi sapiente sit officiis sunt nihil
-                    asperiores corporis officia tempore!
-                    Labore tempora ipsum asperiores harum est, aliquam ea dolores eaque? Culpa incidunt vel ratione
-                    veritatis esse quasi tenetur eum sed! Est consectetur unde voluptas amet, nesciunt deleniti
-                    fugit laudantium veniam?
-                    Reprehenderit earum, excepturi distinctio quod a rem, dolor aspernatur voluptatibus vero minima
-                    consectetur saepe officiis. Veritatis dolor odio perferendis unde, ex inventore impedit harum,
-                    ab nihil ad temporibus quia quo.
-                    Optio tempora deleniti assumenda maiores consequatur accusamus reiciendis dolore temporibus
-                    minima, omnis vero fugit, commodi aspernatur nihil in libero repellat. Perferendis natus, fugit
-                    dolorum accusantium tenetur expedita aspernatur molestiae voluptates.
-                    Autem, unde officia illo possimus, sit earum incidunt assumenda dicta commodi expedita provident
-                    odio. Officiis molestias a eligendi optio? Ipsa aliquam quam distinctio nulla quas sint quisquam
-                    harum quasi dolor?
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit sit nihil quasi quia beatae consequuntur neque, architecto magni! Voluptatem veniam reiciendis ipsa totam tempore quae aspernatur a, dolorum obcaecati unde!
-                    Odit, nostrum aliquam. Velit rem sed nemo nobis beatae, dolorem iste deserunt eum architecto magni, aspernatur eius facilis quibusdam quos, ad eaque repudiandae aliquam! Quae sed vel assumenda delectus reprehenderit.
-                    Sapiente magni aperiam natus neque fugiat nisi tenetur laborum et ipsum obcaecati deserunt temporibus sunt delectus incidunt blanditiis placeat nulla maxime ipsam similique, quos beatae consequuntur eaque atque porro. Voluptatem.
-                    At accusantium vel placeat illum eum debitis nihil modi totam! Esse, nihil! Iure praesentium in similique vero aliquid quia voluptatibus, recusandae est, explicabo minus distinctio. Dolore placeat dolorum mollitia velit!
-                    Cupiditate hic aliquid laborum, numquam laudantium, facilis debitis aut libero id asperiores aspernatur possimus ab. Iusto architecto hic error, odit corrupti natus excepturi laboriosam sed aliquam in at praesentium sint.
-                    A aut dolorum ipsam placeat amet numquam illo est cumque ad fugit nesciunt sequi, nisi aperiam, tenetur veniam perferendis optio vitae! Repellat enim eaque unde fugit aperiam ipsam adipisci excepturi!
-                    Omnis temporibus sunt rerum veniam deleniti vitae aspernatur minima facilis sequi? Velit est assumenda culpa. Deserunt atque exercitationem asperiores quae ea reiciendis, culpa magnam ipsa a labore vero dicta ex?
-                    Animi maiores doloribus laudantium facere nam veniam molestias dignissimos eum deleniti in voluptates quisquam ducimus similique sunt aut asperiores ea ullam ratione eaque molestiae earum hic, esse, consequatur corrupti. Dolor?
-                    Nesciunt voluptas maxime blanditiis similique. Consequatur aspernatur corporis ea ex sit esse nemo saepe, amet at minus quae cupiditate reiciendis dolorum fuga laudantium dolor harum sunt rerum eius dignissimos itaque.
-                    Iste ullam nostrum quo magnam maiores, odit placeat, esse harum mollitia tempore quisquam sunt quos quasi? Molestiae delectus culpa repellendus, rem facere, aperiam asperiores optio mollitia ipsum tempore ea itaque?
-                    Porro, cum? Adipisci error molestias temporibus delectus sit incidunt, natus est exercitationem
-                    officiis perferendis voluptatem accusantium, corrupti perspiciatis cum dignissimos architecto!
-                    Tempora molestiae, autem cum obcaecati porro esse magnam vero.
-                    Fugiat iure, earum pariatur totam consequatur accusantium est incidunt vitae veritatis nulla
-                    perspiciatis quaerat voluptas inventore impedit officia? Voluptatibus possimus reiciendis dolore
-                    rerum enim cumque debitis vitae deleniti repellendus qui.
-                    Beatae aut numquam sapiente esse! Eligendi nihil sapiente dolores, doloremque, fuga quidem nulla
-                    aliquam velit rerum soluta, quis eveniet hic commodi perferendis atque reiciendis neque dolor
-                    magni quisquam quod. Enim?
-                    Officiis sint excepturi dolore sed culpa similique odio corrupti tempore sit ratione hic vero
-                    quaerat, tenetur quod est recusandae dolorum praesentium, quas quo nisi repellat consectetur,
-                    quam exercitationem. Adipisci, sint?
-                    Veniam nulla doloribus unde voluptatum neque voluptate dolore, quae repudiandae. Repellendus a
-                    consequuntur autem porro dignissimos iure iste ab deserunt necessitatibus nemo, exercitationem
-                    hic numquam at magni voluptate facilis cum?
-                    Modi eveniet illo officiis iste nulla mollitia tenetur molestias nesciunt ipsa odit, animi
-                    laboriosam architecto numquam voluptatem quam expedita quae amet. Quibusdam laudantium iusto
-                    veritatis ut omnis recusandae, inventore illum!
-                    Doloremque eius voluptatem quas reiciendis corrupti vero error nihil, maiores quaerat
-                    voluptatibus ipsam ea quibusdam alias suscipit a minus possimus fugiat, deleniti soluta aperiam
-                    quo eveniet! Alias nostrum quasi illo.
-                    Dolore, libero dignissimos. Sed ut animi possimus ducimus, ipsa molestias iste id, eveniet
-                    repellat necessitatibus hic? Atque, vero ducimus voluptates quasi, velit assumenda suscipit
-                    perspiciatis debitis veniam recusandae hic. Consequuntur.
-                    Autem quia incidunt vero eius necessitatibus quisquam cumque fugiat laboriosam quos nemo
-                    voluptate amet saepe minus, ipsam quae ipsum recusandae sunt quasi qui distinctio, quod harum.
-                    Quo reiciendis provident consequuntur!
-                    Eveniet fugit debitis ipsa aspernatur consequuntur quibusdam, maxime est in id mollitia
-                    recusandae enim odit, veritatis corrupti, maiores optio ex atque cumque voluptatem eligendi aut?
+                    es optio ex atque cumque voluptatem eligendi aut?
                     Distinctio adipisci libero nesciunt maiores.
 
                 </p>
@@ -151,11 +101,10 @@
         </div>
         <hr>
         <div class="flex-container  justify-content-around ">
-            <div class="block w20">
+            <div class="block w25">
                 <h3>status</h3>
-                
-                <p class="margin-p"> atualizado no livro <span class="destacar">spearmaster</span> <span
-                        class='destacar'>{{s.page}} </span></p>
+
+                <p class=""> Ultima vez atualizado na pagina <span class='destacar'>{{s.page}} </span></p>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -200,14 +149,20 @@
                         </tr>
                         <tr>
 
-                            <td>MAN</td>
+                            <td>KY</td>
                             <td>{{s.KY}}</td>
 
                         </tr>
                         <tr>
 
                             <td>CTR</td>
-                            <td>{{s.CTR}}</td>
+                            <td>{{s.CTL}}</td>
+
+                        </tr>
+                        <tr>
+
+                            <td>PER</td>
+                            <td>{{s.PER}}</td>
 
                         </tr>
                     </tbody>
@@ -218,77 +173,37 @@
 
             <div class="block w30">
                 <h3>proficienca</h3>
-                <p> atualizado no livro <span class="destacar">spearmaster</span> pagina <span
-                        class='destacar'>7</span></p>
+                <p>Ultima vez atualizado na pagina <span class='destacar'>{{ proficiencia_page.page }}</span>
+                </p>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
 
                             <th scope="col">Arma</th>
                             <th scope="col">Rank</th>
-                            <th scope="col">Level</th>
+                            <th scope="col">NV</th>
+                            <th scope="col">Page</th>
 
 
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-
-                            <td>STR</td>
-                            <td>5</td>
-                            <td>renascimento</td>
-
-
-                        </tr>
-                        <tr>
-
-                            <td>AGI</td>
-                            <td>7</td>
-                            <td>renascimento</td>
-
-                        </tr>
-                        <tr>
-
-                            <td>DEX</td>
-                            <td>9</td>
-                            <td>renascimento</td>
-
-                        </tr>
-                        <tr>
-
-                            <td>RES</td>
-                            <td>9</td>
-                            <td>renascimento</td>
-
-                        </tr>
-                        <tr>
-
-                            <td>CON</td>
-                            <td>9</td>
-                            <td>renascimento</td>
-
-                        </tr>
-                        <tr>
-
-                            <td>MAN</td>
-                            <td>9</td>
-                            <td>renascimento</td>
-
-                        </tr>
-                        <tr>
-
-                            <td>CTR</td>
-                            <td>9</td>
-                            <td>renascimento</td>
-
-                        </tr>
+                    {% for proficience in proficiences %}
+                    <tr>
+                        <td>{{ proficience.weapon}}</td>
+                        <td>{{ proficience.mastery}}</td>
+                        <td>{{ proficience.level}}</td>
+                        <td>{{ proficience.page}}</td>
+                    </tr>
+                    {% endfor %}
+                      
                     </tbody>
                 </table>
             </div>
             <div class="hr-div"></div>
             <div class="block w40">
                 <h3>Tecnicas aprendidas</h3>
-                <p> até a pagina <span class='destacar'>7</span></p>
+                <p> Ultima vez atualizado na pagina<span class='destacar'>7</span></p>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -299,42 +214,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        {% for skill in skills %}
+                                <tr>
+                                    <td>{{skill.rank}}</td>
+                                    <td>{{skill.name}}</td>
+                                    <td>{{skill.mastery}}</td>
 
-                            <td>black iron peak</td>
-                            <td>mirrage spear</td>
-                            <td>
-                                teste
-                            </td>
+                                </tr>
 
-
-
-                        </tr>
-                        <tr>
-
-                            <td>armadura</td>
-                            <td>7</td>
-                            <td>renascimento</td>
-
-
-                        </tr>
-                        <tr>
-
-                            <td>DEX</td>
-                            <td>9</td>
-                            <td>renascimento</td>
-
-
-                        </tr>
-                        <tr>
-
-                            <td>RES</td>
-                            <td>9</td>
-                            <td>renascimento</td>
-
-
-                        </tr>
-
+                        {% endfor %}
+                       
                     </tbody>
                 </table>
             </div>
@@ -343,7 +232,7 @@
         <hr>
         <div class="block w60">
             <h3>inventario</h3>
-            <p> possui <span class="destacar">6</span> moedas de ouro, na pagina <span class='destacar'>7</span></p>
+            <p> possui <span class="destacar">600</span> moedas de prata, na pagina <span class='destacar'>7</span></p>
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -400,7 +289,7 @@
             </table>
         </div>
 
-        
+
         <hr>
         <div class="block">
             <h3>Domain</h3>

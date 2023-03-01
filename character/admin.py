@@ -10,3 +10,5 @@ class CharacterAdmin(admin.ModelAdmin):
 admin.site.register(Characters,CharacterAdmin)
 admin.site.register(Proficience)
 admin.site.register(Status)
+admin.site.register(Skills)
+admin.site.register(Rank)

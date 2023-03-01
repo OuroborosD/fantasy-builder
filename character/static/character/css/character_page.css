@@ -7,7 +7,11 @@ h4 {
     text-transform: capitalize;
 }
 
-
+.text-l{
+    font-size: 16px;
+    color: black;
+    font-family:  Helvetica;
+}
 
 .margin-p {
     margin: 8px 4px;
@@ -42,6 +46,12 @@ hr {
 
     width: 20%;
 }
+
+.w25 {
+
+    width: 25%;
+}
+
 
 .w30 {
 
@@ -127,6 +137,7 @@ section {
 /*section*/
 
 /*aside*/
+/*rgba(255, 0, 0, 0.705);*/
 
 aside {
     background-color: rgba(255, 0, 0, 0.705);
@@ -134,7 +145,7 @@ aside {
     border: 4px solid black;
     margin: 8px;
     display: flex;
-    align-items:stretch;
+    justify-content:initial;
     flex-direction: column;
     
 
