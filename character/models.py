@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 from django.core.validators import MaxValueValidator, MinValueValidator
+from helper.models import WeaponsType
 
 from utils.rank import Rank
 # Create your models here.
@@ -38,12 +39,12 @@ skill_sub_rank = (
 )
 
 
-skill_mastery =(
-    ('beggining','beggining'),
-    ('intermediary','intermediary'),
-    ('small completion','small completion'),
-    ('great completion','great completion'),
-    ('master','master'),
+skill_mastery = (
+    ('beggining', 'beggining'),
+    ('intermediary', 'intermediary'),
+    ('small completion', 'small completion'),
+    ('great completion', 'great completion'),
+    ('master', 'master'),
 )
 
 
@@ -94,6 +95,34 @@ weapon_list = (
 ##########################################################################
 
 
+class Skills(models.Model):
+    type_skill = models.CharField(max_length=20, choices=Rank().skill_type)
+    weapon_type = models.CharField(max_length=20, choices=Rank().weapon_type)
+    name = models.CharField(max_length=50)
+    rank = models.CharField(max_length=20, choices=Rank().skill_rank)
+    sub_rank = models.CharField(max_length=6, choices=Rank().skill_sub_rank)
+    description = models.TextField()
+
+    def __str__(self):
+        return f'{self.name} | {self.rank}'
+
+
+class Proficience(models.Model):
+    rank = models.CharField(max_length=20, choices=Rank().proficience_rank)
+    learning = models.SmallIntegerField()
+    damage = models.SmallIntegerField()
+    control = models.SmallIntegerField()
+    aura = models.SmallIntegerField(
+         validators=[
+            MinValueValidator(50)
+        ]
+    )
+
+
+    def __str__(self):
+        return f'{self.pk}: {self.rank} -- learning: {self.learning}% control:{self.control}'
+
+
 class Characters(models.Model):
     name = models.CharField(max_length=50)
     alias = models.CharField(max_length=50, default='N/A')
@@ -101,7 +130,9 @@ class Characters(models.Model):
     season = models.CharField(max_length=30)
     periode = models.CharField(max_length=15)
     slug = models.SlugField(default='', blank=True, null=True, db_index=True)
-    
+    skills = models.ManyToManyField(Skills, through='CharacterSkills')
+    proficience = models.ManyToManyField(
+        Proficience, through='CharacterProficience')
 
     def save(self, *args, **kwargs):  # sobrescreve o save metod
         self.slug = slugify(f'{self.name} {self.alias} {self.birth_year}')
@@ -114,21 +145,35 @@ class Characters(models.Model):
         return reverse('character-page', kwargs={'slug': self.slug})
 
     class Meta:
-        verbose_name_plural = 'character entries'
+        verbose_name_plural = 'character Entries'
 
-class Proficience(models.Model):
-    weapon = models.CharField(max_length=20, choices=weapon_list)
-    mastery = models.CharField(max_length=15, choices=proficience_rank)
+
+class CharacterSkills(models.Model):
+    character_id = models.ForeignKey(Characters, on_delete=models.CASCADE)
+    skill_id = models.ForeignKey(Skills, on_delete=models.CASCADE)
+    mastery = models.CharField(max_length=20, choices=Rank().skill_mastery)
+    page = models.SmallIntegerField()
+
+    class Meta:
+        verbose_name_plural = 'character Skills'
+
+    def __str__(self):
+        return f' {self.pk} : {self.skill_id} | {self.mastery} page: {self.page}'
+
+
+class CharacterProficience(models.Model):
+    character_id = models.ForeignKey(Characters, on_delete=models.CASCADE)
+    proficience_id = models.ForeignKey(Proficience, on_delete=models.CASCADE)
+    weapon_id = models.ForeignKey(WeaponsType, on_delete=models.CASCADE)
     level = models.SmallIntegerField(
         validators=[
             MaxValueValidator(10),
             MinValueValidator(0)
         ])
     page = models.SmallIntegerField()
-    fk_character = models.ManyToManyField(Characters)
 
     def __str__(self):
-        return f'{self.weapon} {self.mastery}'
+        return f'{self.pk}: {self.weapon_id} | {self.proficience_id}'
 
 
 class Status(models.Model):
@@ -146,20 +191,37 @@ class Status(models.Model):
     def __str__(self):
         return f' {self.page} {self.fk_character}'
 
+    class Meta:
+        verbose_name_plural = 'Status Entries'
 
-class Skills(models.Model):
-    name = models.CharField(max_length=50)
-    rank = models.CharField(max_length=20, choices=skill_rank)
-    sub_rank = models.CharField(max_length=6, choices=skill_sub_rank)
-    mastery = models.CharField(max_length=20, choices=skill_mastery)
-    page = models.SmallIntegerField()
-    fk_character = models.ForeignKey(Characters, on_delete=models.CASCADE)
+
+# class Skills(models.Model):
+#     name = models.CharField(max_length=50)
+#     rank = models.CharField(max_length=20, choices=skill_rank)
+#     sub_rank = models.CharField(max_length=6, choices=skill_sub_rank)
+#     mastery = models.CharField(max_length=20, choices=skill_mastery)
+#     page = models.SmallIntegerField()
+#     fk_character = models.ForeignKey(Characters, on_delete=models.CASCADE)
+
+#     def __str__(self):
+#         return f'{self.name}  rank:{self.rank}-{self.sub_rank} maestria atual {self.mastery}'
+
+
+class Realms(models.Model):
+    rank_position = models.SmallIntegerField()
+    rank = models.CharField(max_length=20, choices=realm)
+    bonus_physic = models.SmallIntegerField()
+    limit_spiritual = models.SmallIntegerField()
+    bonus_spiritual = models.SmallIntegerField()
+    limit_physic = models.SmallIntegerField()
+    description = models.TextField(default='N/A')
 
     def __str__(self):
-        return f'{self.name}  rank:{self.rank}-{self.sub_rank} maestria atual {self.mastery}'
+        return f'{self.rank_position}:{self.rank}   atritutos:{self.bonus_physic }/{self.limit_physic} |  atritutos_espitiruais:{self.bonus_spiritual }/{self.limit_spiritual}'
+
+    class Meta:
+        verbose_name_plural = 'Realms'
 
 
-class Rank(models.Model):
-    rank = models.CharField(max_length=20, choices=realm)
-    page = models.SmallIntegerField()
-    fk_character = models.ManyToManyField(Characters)
+
+

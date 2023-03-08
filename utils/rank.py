@@ -1,6 +1,13 @@
 
 class Rank:
 
+    skill_type = (
+        ('fundation','fundation'),
+        ('skill','skill'),
+    )
+
+    skill_type_list = ['fundation', 'skill']
+
     skill_rank = (
         ('comum', 'comum'),
         ('incomum', 'incomum'),
@@ -109,7 +116,7 @@ class Rank:
 
     )
 
-    weapon_list = (
+    weapon_type = (
         ('sword', 'sword'),
         ('spear', 'spear'),
         ('axe', 'axe'),
@@ -119,4 +126,15 @@ class Rank:
         ('shield', 'shield'),
         ('mace', 'mace'),
     )
+
+    weapon_type_list = [
+        'sword', 
+        'spear', 
+        'axe', 
+        'dagger', 
+        'bow', 
+        'unarmed', 
+        'shield',
+        'mace',
+    ]
 

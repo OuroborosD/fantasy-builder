@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="exampleInputPassword1">name</label>
+        <input type="text" class="form-control" id="exampleInputPassword1" name='name' placeholder="Password">
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlSelect1">type</label>
+        <select class="form-control" name='type' id="exampleFormControlSelect1">
+            {% for rank in type %}
+            <option>{{ rank }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlSelect1">type weapon</label>
+        <select class="form-control" name='type_weapon' id="exampleFormControlSelect1">
+            {% for rank in weapon %}
+            <option>{{ rank }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlSelect1">rank</label>
+        <select class="form-control" name='rank' id="exampleFormControlSelect1">
+            {% for rank in ranks %}
+            <option>{{ rank }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlSelect1">sub rank</label>
+        <select class="form-control" name='sub_rank' id="choice">
+            {% for s_rank in sub_ranks %}
+            <option>{{ s_rank }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock content %}

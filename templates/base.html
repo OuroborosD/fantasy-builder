@@ -10,7 +10,9 @@
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
   <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
   <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
-   {% block css %} {% endblock css %}
+  {% block css %} {% endblock css %}
+  <script src="{% static 'js/js.js' %}"></script>
+
   <style>
     /* Remove the navbar's default margin-bottom and rounded borders */ 
     .navbar {
@@ -65,7 +67,7 @@
             <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="{% url 'character' %}">character <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="{% url 'characters' %}">character <span class="sr-only">(current)</span></a>
           </li>
           {% block nav %}
           {% endblock nav %}

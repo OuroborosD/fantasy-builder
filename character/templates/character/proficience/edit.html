@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h1>normal</h1>
+<div class="mx-auto">
+    <form action="" method="POST" >
+
+        {% csrf_token %}
+        {{ form }}
+        
+    
+        <input type="submit" value="Update">
+    </form>
+</div>
+<br>
+
+
+
+{% endblock content %}

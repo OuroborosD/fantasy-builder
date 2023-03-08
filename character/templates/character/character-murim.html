@@ -104,12 +104,14 @@
             <div class="block w25">
                 <h3>status</h3>
 
-                <p class=""> Ultima vez atualizado na pagina <span class='destacar'>{{s.page}} </span></p>
+                <a href="{% url 'status-add' c.slug %}" style="color: black;">
+                    <p class=""> Ultima vez atualizado na pagina <span class='destacar'>{{s.page}} </span></p>
+                </a>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
 
-                            <th scope="col">Atributo</th>
+                            <th scope="col"><a style="color: black;" href="{% url 'status-edit' c.slug s.pk %}">Atributo</a></th>
                             <th scope="col">Value</th>
 
 
@@ -118,7 +120,7 @@
                     <tbody>
                         <tr>
 
-                            <td>STR</td>
+                            <a href="{% url 'status-add' c.slug %}"><td>STR</td></a>
                             <td>{{s.STR}}</td>
 
 
@@ -173,8 +175,10 @@
 
             <div class="block w30">
                 <h3>proficienca</h3>
-                <p>Ultima vez atualizado na pagina <span class='destacar'>{{ proficiencia_page.page }}</span>
-                </p>
+                <a href="{% url 'proficience-add'  c.slug %}"  style="color: black;">
+                    <p>Ultima vez atualizado na pagina <span class='destacar'>{{ proficience_page }}</span></p>
+                </a>
+                
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -182,7 +186,7 @@
                             <th scope="col">Arma</th>
                             <th scope="col">Rank</th>
                             <th scope="col">NV</th>
-                            <th scope="col">Page</th>
+
 
 
                         </tr>
@@ -190,10 +194,10 @@
                     <tbody>
                     {% for proficience in proficiences %}
                     <tr>
-                        <td>{{ proficience.weapon}}</td>
-                        <td>{{ proficience.mastery}}</td>
+                        <td><a href="{% url 'proficience-edit' c.slug proficience.pk %}">{{ proficience.weapon_id.weapon}}</a></td>
+                        <td>{{ proficience.proficience_id.rank}}</td>
                         <td>{{ proficience.level}}</td>
-                        <td>{{ proficience.page}}</td>
+
                     </tr>
                     {% endfor %}
                       
@@ -203,7 +207,12 @@
             <div class="hr-div"></div>
             <div class="block w40">
                 <h3>Tecnicas aprendidas</h3>
-                <p> Ultima vez atualizado na pagina<span class='destacar'>7</span></p>
+               
+                    <a href="{% url 'skill-character'  c.slug %}"  style="color: black;">
+                        <p> Ultima vez atualizado na pagina <span class='destacar'>{{ skill_page }}</span></p>
+
+                    </a>
+
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -216,8 +225,8 @@
                     <tbody>
                         {% for skill in skills %}
                                 <tr>
-                                    <td>{{skill.rank}}</td>
-                                    <td>{{skill.name}}</td>
+                                    <td>{{skill.skill_id.rank}}</td>
+                                    <td>{{skill.skill_id.name}}</td>
                                     <td>{{skill.mastery}}</td>
 
                                 </tr>
@@ -232,7 +241,7 @@
         <hr>
         <div class="block w60">
             <h3>inventario</h3>
-            <p> possui <span class="destacar">600</span> moedas de prata, na pagina <span class='destacar'>7</span></p>
+            <p> possui <span class="destacar">600</span> moedas de prata, na pagina <span class='destacar'> 7</span></p>
             <table class="table table-bordered">
                 <thead>
                     <tr>

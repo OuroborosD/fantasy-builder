@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="exampleFormControlSelect1">weapon</label>
+        <select class="form-control" name='type_weapon' id="exampleFormControlSelect1">
+            {% for weapon in weapons %}
+            <option>{{ weapon }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlSelect1">rank</label>
+        <select class="form-control" name='proficience' id="exampleFormControlSelect1">
+            {% for proficience in proficiences %}
+            <option value="{{ proficience.pk}}">{{ proficience }}</option>
+            {% endfor %}
+        </select>
+    </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">level</label>
+            <input type="text" class="form-control" id="exampleInputPassword1" name='level' placeholder="Password">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">page</label>
+            <input type="text" class="form-control" id="exampleInputPassword1" name='page' placeholder="Password">
+        </div>
+    
+
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock content %}
