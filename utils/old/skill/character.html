@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="exampleFormControlSelect1">skill</label>
+        <select class="form-control" name='teste' id="exampleFormControlSelect1">
+            {% for skill in skills %}
+                <option value="{{ skill.pk }}">{{ skill }}</option>
+            {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="exampleFormControlSelect1">maestria</label>
+        <select class="form-control" name='mastery' id="exampleFormControlSelect1">
+            {% for mastery in masteries %}
+                <option>{{ mastery }}</option>
+            {% endfor %}
+        </select>
+      </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">page</label>
+        <input type="number" class="form-control" id="exampleInputPassword1" name='page' placeholder="Password">
+    </div>
+ 
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+{% endblock content %}

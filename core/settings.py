@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'character',
     'helper',
     'geography.apps.GeographyConfig',
+    'geopolitic.apps.GeopoliticConfig',
+                    
 ]
 
 MIDDLEWARE = [

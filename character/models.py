@@ -2,7 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 from django.core.validators import MaxValueValidator, MinValueValidator
-from helper.models import WeaponsType
+from helper.models import WeaponsType, SkillMastery, Season, Periode
 
 from utils.rank import Rank
 # Create your models here.
@@ -97,11 +97,18 @@ weapon_list = (
 
 class Skills(models.Model):
     type_skill = models.CharField(max_length=20, choices=Rank().skill_type)
-    weapon_type = models.CharField(max_length=20, choices=Rank().weapon_type)
+    weapon_type = models.SmallIntegerField( choices=WeaponsType.objects.all().values_list('id','weapon'))
     name = models.CharField(max_length=50)
     rank = models.CharField(max_length=20, choices=Rank().skill_rank)
     sub_rank = models.CharField(max_length=6, choices=Rank().skill_sub_rank)
     description = models.TextField()
+    bonus_status = models.CharField(max_length=20)
+    time = models.SmallIntegerField()
+    bonus_1 = models.SmallIntegerField()
+    bonus_2 = models.SmallIntegerField()
+    bonus_3 = models.SmallIntegerField()
+    bonus_4 = models.SmallIntegerField()
+    bonus_5 = models.SmallIntegerField()
 
     def __str__(self):
         return f'{self.name} | {self.rank}'
@@ -122,17 +129,34 @@ class Proficience(models.Model):
     def __str__(self):
         return f'{self.pk}: {self.rank} -- learning: {self.learning}% control:{self.control}'
 
+class Realms(models.Model):
+    rank_position = models.SmallIntegerField()
+    rank = models.CharField(max_length=20, choices=realm)
+    bonus_physic = models.SmallIntegerField()
+    limit_spiritual = models.SmallIntegerField()
+    bonus_spiritual = models.SmallIntegerField()
+    limit_physic = models.SmallIntegerField()
+    description = models.TextField(default='N/A')
+
+    def __str__(self):
+        return f'{self.rank_position}:{self.rank}   atritutos:{self.bonus_physic }/{self.limit_physic} |  atritutos_espitiruais:{self.bonus_spiritual }/{self.limit_spiritual}'
+
+    class Meta:
+        verbose_name_plural = 'Realms'
+
+
 
 class Characters(models.Model):
     name = models.CharField(max_length=50)
     alias = models.CharField(max_length=50, default='N/A')
     birth_year = models.SmallIntegerField()
-    season = models.CharField(max_length=30)
-    periode = models.CharField(max_length=15)
+    season = models.ForeignKey(Season, on_delete=models.SET_NULL, null=True)
+    periode = models.ForeignKey(Periode,on_delete=models.SET_NULL, null=True)
     slug = models.SlugField(default='', blank=True, null=True, db_index=True)
     skills = models.ManyToManyField(Skills, through='CharacterSkills')
-    proficience = models.ManyToManyField(
-        Proficience, through='CharacterProficience')
+    proficience = models.ManyToManyField(Proficience, through='CharacterProficience')
+    realm = models.ManyToManyField(Realms,through='CharacterRealm')
+    description = models.TextField(default='olá eu sou goku', null=True)
 
     def save(self, *args, **kwargs):  # sobrescreve o save metod
         self.slug = slugify(f'{self.name} {self.alias} {self.birth_year}')
@@ -145,13 +169,18 @@ class Characters(models.Model):
         return reverse('character-page', kwargs={'slug': self.slug})
 
     class Meta:
-        verbose_name_plural = 'character Entries'
+        verbose_name_plural = 'Character Entries'
 
+
+class CharacterRealm(models.Model):
+    fk_character = models.ForeignKey(Characters, on_delete=models.CASCADE)
+    fk_realm = models.ForeignKey(Realms, on_delete=models.CASCADE)
+    page = models.SmallIntegerField()
 
 class CharacterSkills(models.Model):
     character_id = models.ForeignKey(Characters, on_delete=models.CASCADE)
     skill_id = models.ForeignKey(Skills, on_delete=models.CASCADE)
-    mastery = models.CharField(max_length=20, choices=Rank().skill_mastery)
+    mastery = models.ForeignKey(SkillMastery, on_delete=models.SET_DEFAULT, default=0)
     page = models.SmallIntegerField()
 
     class Meta:
@@ -207,20 +236,6 @@ class Status(models.Model):
 #         return f'{self.name}  rank:{self.rank}-{self.sub_rank} maestria atual {self.mastery}'
 
 
-class Realms(models.Model):
-    rank_position = models.SmallIntegerField()
-    rank = models.CharField(max_length=20, choices=realm)
-    bonus_physic = models.SmallIntegerField()
-    limit_spiritual = models.SmallIntegerField()
-    bonus_spiritual = models.SmallIntegerField()
-    limit_physic = models.SmallIntegerField()
-    description = models.TextField(default='N/A')
-
-    def __str__(self):
-        return f'{self.rank_position}:{self.rank}   atritutos:{self.bonus_physic }/{self.limit_physic} |  atritutos_espitiruais:{self.bonus_spiritual }/{self.limit_spiritual}'
-
-    class Meta:
-        verbose_name_plural = 'Realms'
 
 
 

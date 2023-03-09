@@ -1,6 +1,19 @@
 from django import forms
-from character.models import Proficience, Skills, Status
+from character.models import Characters, Proficience, Skills, Status, CharacterSkills, CharacterRealm
 from helper.models import WeaponsType 
+
+
+
+class CharacterForm(forms.ModelForm):
+    class Meta:
+        model=Characters
+        exclude=['slug']
+
+class CharacterRealmForm(forms.ModelForm):
+    class Meta:
+        model = CharacterRealm
+        exclude = ['fk_character']
+
 
 class ProficienceForm(forms.Form):
     weapon = forms.ChoiceField(label='arma de escolha', choices =WeaponsType.objects.all().values_list('id','weapon'))
@@ -16,6 +29,20 @@ class StatusForm(forms.ModelForm):
         model = Status
         exclude = ['fk_character']
 
+
+
+
+
+class SkillForm(forms.ModelForm):
+    class Meta:
+        model = Skills
+        fields = '__all__'
+
+
+class CharacterSkillForm(forms.ModelForm):
+    class Meta:
+        model = CharacterSkills
+        exclude = ['character_id']
 
 
 # class ProficienceEditModelForm(forms.ModelForm):

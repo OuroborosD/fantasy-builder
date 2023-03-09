@@ -21,7 +21,9 @@ body{
 
 }
 
-.input-form input, select{
+
+
+.input-form input, select, textarea{
 font: inherit;
 padding: 0.25rem;
 border-radius: 4px;
@@ -30,7 +32,7 @@ display: block;
 margin: 8px;
 }
 
-.input-form input:focus , select:focus{
+.input-form input:focus , select:focus, textarea:focus {
 border-color:rgb(26, 111, 168);
 background-color: rgb(201, 228, 245);
 outline: none;

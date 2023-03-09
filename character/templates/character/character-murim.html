@@ -8,7 +8,7 @@
 
 {% block nav %}
 <li class="nav-item active">
-    <a class="nav-link" href="{% url 'skill-add' c.slug %}">adicionar skill<span class="sr-only">(current)</span></a>
+    <a class="nav-link" href="{% url 'skill-add' c.slug %}">adicionar skill<span class="sr-only">teste</span></a>
 </li>
 {% endblock nav %}
 
@@ -96,12 +96,14 @@
 
         <h1 class="center-title-1">estatisticas do personagem</h1>
         <div class="block">
-            <p> <span class="destacar">{{c.name}}</span> possui o matial rank de <span class="destacar">
-                    reforço</span>, ela entrou nesse rank no livro spearmenchim pagina spa</p>
+           <a href="{% url 'realm-add' c.slug %}">
+            <p> <span class="destacar">{{c.name}}</span> possui o matial realms:  <span class="destacar">
+                {{realm.fk_realm.rank}}</span>, na pagina <span class="destacar"> {{ realm.page }}</span></p>
+           </a>
         </div>
         <hr>
         <div class="flex-container  justify-content-around ">
-            <div class="block w25">
+            <div class="block w27">
                 <h3>status</h3>
 
                 <a href="{% url 'status-add' c.slug %}" style="color: black;">
@@ -110,8 +112,11 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-
-                            <th scope="col"><a style="color: black;" href="{% url 'status-edit' c.slug s.pk %}">Atributo</a></th>
+                            {% if s.pk == None or s.pk == Null %}
+                                <th scope="col">Atributo</th>
+                                {% else %}
+                                <th scope="col"><a style="color: black;" href="{% url 'status-edit' c.slug s.pk %} ">Atributo</a></th>
+                                {% endif %}
                             <th scope="col">Value</th>
 
 
@@ -225,9 +230,9 @@
                     <tbody>
                         {% for skill in skills %}
                                 <tr>
-                                    <td>{{skill.skill_id.rank}}</td>
+                                    <td><a href="{% url 'skill-character-edit' c.slug skill.pk %}">{{skill.skill_id.rank}}</a></td>
                                     <td>{{skill.skill_id.name}}</td>
-                                    <td>{{skill.mastery}}</td>
+                                    <td>{{skill.mastery.rank}}</td>
 
                                 </tr>
 

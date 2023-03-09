@@ -5,8 +5,9 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from utils.rank import Rank
 
-from .models import CharacterSkills, Characters, Skills, Status, Proficience, CharacterProficience
-from .froms import ProficienceForm, StatusForm
+from .models import CharacterRealm, CharacterSkills, Characters, Skills, Status, Proficience, CharacterProficience
+#-------------------Forms
+from .froms import CharacterRealmForm, ProficienceForm, StatusForm, SkillForm, CharacterSkillForm
 
 from helper.models import WeaponsType
 # Create your views here.
@@ -57,6 +58,10 @@ def characterDetailView(request, slug):
     )AS subquery ORDER BY page DESC
         """
     )
+
+
+    realm = CharacterRealm.objects.filter(fk_character=character.pk).order_by('page').last()
+
     update_page_skill  = 0
     update_page_proficience  = 0
     try:
@@ -78,6 +83,7 @@ def characterDetailView(request, slug):
         's': status,
         'c': character,
         'proficiences':proficience,
+        'realm':realm,
         'skills': skill,
         'proficience_page':update_page_proficience,
         'skill_page':update_page_skill,
@@ -96,7 +102,7 @@ class characterPage(DetailView):
 
 class AddCharacter(CreateView):
     model = Characters
-    template_name = 'character/add_character.html'
+    template_name = 'character/character/add.html'
     fields = ['name', 'alias', 'birth_year', 'season', 'periode']
 
 
@@ -112,70 +118,25 @@ class DeleteCharacter(DeleteView):
     success_url = reverse_lazy('character')
 
 
-#################### skill#############################
+#################### realm #############################
 
-def skillCharacter(request, slug):
-    ranks = Rank()
+
+def addRealm(request, slug):
     character = Characters.objects.get(slug=slug)
-    skill =  Skills.objects.raw('SELECT * FROM character_skills')
-    print(f'---------------------{character}')
-
     if request.method == 'POST':
-        selected_skill = skill.get(pk=int(request.POST['teste']))
-        mastery_skill = request.POST['mastery']
-        page_skill = request.POST['page']
+        form = CharacterRealmForm(request.POST)
+        if form.is_valid():
+            form_aux = form.save(commit=False)
+            form_aux.fk_character = character
+            form_aux.save()
 
-        # Skills.objects.create(type_skill='fundation',weapon_type='spear',name=name_skill,rank=rank_skill,sub_rank=sub_rank_skill)
-        CharacterSkills.objects.create(
-            character_id=character, 
-            skill_id=selected_skill, 
-            page=page_skill,
-            mastery=mastery_skill,)
+            # não é boa pratica redirecionar na mesma pagina
+            return redirect('character-page', slug=slug)
 
-        # não é boa pratica redirecionar na mesma pagina
-        return redirect('character-page', slug=slug)
-
+    else:
+        form = CharacterRealmForm()
     context = {
-        'masteries': ranks.skill_mastery_list,
-        'skills': skill,
-    }
-
-    return render(request, 'character/skill/character.html', context)
-
-
-
-def skillAdd(request, slug):
-    ranks = Rank()
-    character = Characters.objects.get(slug=slug)
-    skill = Skills.objects.all()
-    print(f'---------------------{character}')
-
-    print(f'---------------------{skill}')
-
-    if request.method == 'POST':
-        type_skill = request.POST['type']
-        type_weapon = request.POST['type_weapon']
-        name_skill = request.POST['name']
-        rank_skill = request.POST['rank']
-        sub_rank_skill = request.POST['sub_rank']
-
-        Skills.objects.create(
-            type_skill=type_skill,
-            weapon_type=type_weapon,
-            name=name_skill,
-            rank=rank_skill,
-            sub_rank=sub_rank_skill,)
-
-
-        # não é boa pratica redirecionar na mesma pagina
-        return redirect('character-page', slug=slug)
-
-    context = {
-        'weapon':ranks.weapon_type_list,
-        'type':ranks.skill_type_list,
-        'ranks': ranks.skill_rank_list,
-        'sub_ranks': ranks.skill_sub_rank_list,
-        'skills': skill,
+        'form':form
     }
 
     return render(request, 'character/skill/add.html', context)
@@ -184,9 +145,76 @@ def skillAdd(request, slug):
 
 
 
+#################### skill#############################
+
+
+def skillAdd(request, slug):
+    if request.method == 'POST':
+        form = SkillForm(request.POST)
+        if form.is_valid():
+
+            form.save()
+            # não é boa pratica redirecionar na mesma pagina
+            return redirect('character-page', slug=slug)
+
+    else:
+        form = SkillForm()
+    context = {
+        'form':form
+    }
+
+    return render(request, 'character/skill/add.html', context)
 
 
 
+
+def skillCharacter(request, slug):
+    character = Characters.objects.get(slug=slug)
+    if request.method == 'POST':
+        form = CharacterSkillForm(request.POST)
+        if form.is_valid():
+            print(f'	linha 144-------arquivo: entrou no if   ------- valor:	')
+            form_aux = form.save(commit=False)
+            form_aux.character_id = character
+            form_aux.save()
+            # não é boa pratica redirecionar na mesma pagina
+            return redirect('character-page', slug=slug)
+        else:
+            print(f'	linha 151-------arquivo: NÂO entrou no if   ------- valor:	')
+
+    else:
+        form = CharacterSkillForm()
+    context = {
+        'form': form
+    }
+
+    return render(request, 'character/skill/character.html', context)
+
+
+
+
+def editSkillCharacter(request, slug, pk):
+    character = Characters.objects.get(slug=slug)
+    existing_skill = CharacterSkills.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = CharacterSkillForm(request.POST)
+        if form.is_valid():
+            print(f'	linha 144-------arquivo: entrou no if   ------- valor:	')
+            form_aux = form.save(commit=False)
+            form_aux.character_id = character
+            form_aux.save()
+            # não é boa pratica redirecionar na mesma pagina
+            return redirect('character-page', slug=slug)
+        else:
+            print(f'	linha 151-------arquivo: NÂO entrou no if   ------- valor:	')
+
+    else:
+        form = CharacterSkillForm(instance=existing_skill)
+    context = {
+        'form': form
+    }
+
+    return render(request, 'character/skill/character.html', context)
 
 
 ############################ status###########################
@@ -197,18 +225,21 @@ def statusAdd(request, slug):
         #salva os dados do formulario, e imprede que sejam apagados caso de erro
         form = StatusForm(request.POST)
         if form.is_valid():
-            Status.objects.create(
-                fk_character =character,
-                STR=form.cleaned_data['STR'],
-                AGI=form.cleaned_data['AGI'],
-                DEX=form.cleaned_data['DEX'],
-                RES=form.cleaned_data['RES'],
-                CON=form.cleaned_data['CON'],
-                KY=form.cleaned_data['KY'],
-                CTL=form.cleaned_data['CTL'],
-                PER=form.cleaned_data['PER'],
-                page=form.cleaned_data['page'],
-                )
+            teste = form.save(commit=False)
+            teste.fk_character = character
+            teste.save()
+            # Status.objects.create(
+            #     fk_character =character,
+            #     STR=form.cleaned_data['STR'],
+            #     AGI=form.cleaned_data['AGI'],
+            #     DEX=form.cleaned_data['DEX'],
+            #     RES=form.cleaned_data['RES'],
+            #     CON=form.cleaned_data['CON'],
+            #     KY=form.cleaned_data['KY'],
+            #     CTL=form.cleaned_data['CTL'],
+            #     PER=form.cleaned_data['PER'],
+            #     page=form.cleaned_data['page'],
+            #     )
             return redirect('character-page', slug=slug)
 
     else:
@@ -343,6 +374,8 @@ def editProficience(request,slug, pk):
     return render(request, 'character/proficience/add.html',context)
 
 
+
+############################ REALM ###################################33
 
 
 
