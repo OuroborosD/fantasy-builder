@@ -8,7 +8,7 @@
 
 {% block nav %}
 <li class="nav-item active">
-    <a class="nav-link" href="{% url 'skill-add' c.slug %}">adicionar skill<span class="sr-only">teste</span></a>
+    <a class="nav-link" href="{% url 'character-edit' c.slug %}">editar character<span class="sr-only">teste</span></a>
 </li>
 {% endblock nav %}
 
@@ -21,23 +21,13 @@
             <div class="block" style="width: 65%;">
                 <h1 class="center-title-1">Descrição</h1>
                 <p class="text-l">
-                    The Panda has become the symbol of WWF. The well-known panda logo of WWF originated from a panda
-                    named
-                    Chi Chi that was transferred from the Beijing Zoo to the London Zoo in the same year of th
-                    e establishment of WWF.
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ratione reiciendis illo, sed quod
-                    deserunt sit deleniti iste obcaecati consequatur accusantium minima atque aspernatur tenetur
-                    soluta dolore. Laboriosam autem quo numquam?
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis hic illum fugiat sed sequi
-                    laudantium.
-                    es optio ex atque cumque voluptatem eligendi aut?
-                    Distinctio adipisci libero nesciunt maiores.
+                   {{c.description}}
 
                 </p>
             </div>
             <aside name="character-info">
                 <div class="image-holder">
-                    <img src="{% static 'character/img/cassandra.png' %}" alt="image holder" class="imgt">
+                    <img src="{{ c.img.url }}" alt="image holder" class="imgt">
                 </div>
 
                 <div name="info" class="info-list">

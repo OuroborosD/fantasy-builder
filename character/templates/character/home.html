@@ -1,41 +1,40 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block title %}
 <title>characters</title>
 {% endblock title %}
 
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'character/css/character_page.css' %}">
+{% endblock css %}
+
 {% block nav %}
 <li class="nav-item active">
-    <a class="nav-link" href="{% url 'character-add' %}">criar novo personagem <span class="sr-only">(current)</span></a>
+    <a class="nav-link" href="{% url 'character-add' %}">criar novo personagem <span
+            class="sr-only">(current)</span></a>
 </li>
 {% endblock nav %}
 
 
 {% block content %}
-<h1 class="display-3 text-center">todos os personagens</h1>
-<table class="table table-striped table-bordered">
-    <thead class="thead-dark">
-        <tr>
 
-            <th scope="col">name</th>
-            <th scope="col">birth</th>
-            <th scope="col">age</th>
-            <th scope="col">slug</th>
+<div class="flex-container margin-m">
+{% for character in characters_list %}
+    <div class="card margin-p" style="width: 280px;">
+        <a href="{% url 'character-page' character.slug %}">
+        <div class="card-image-holder">
+            <img class="card-img-top card-img" src="{{ character.img.url }}" alt="Card image cap"> 
+        </div>
+        </a>
+         <div class="card-body">
+             <h5 class="card-title">{{character.name}} {{character.alias}}</h5>
+             <p class="card-text">nasceu no ano {{character.birth_year}}, possui o reino  </p> 
+         </div>
+    </div>
+     {% endfor %}
+</div>
 
-        </tr>
-    </thead>
-    <tbody>
-
-        {% for character in characters_list %}
-                <tr scope="row">
-                <td><a href="{% url 'character-page' character.slug %}">{{character.name}}</a></td>
-                <td>{{character.birth}}</td>
-                <td>{{character.age}}</td>
-                <td>{{character.get_absolute_url}}</td>
-                
-
-                </tr>
-        {% endfor %}
-    </tbody>
-</table>
 {% endblock content %}

@@ -137,6 +137,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+#images
+MEDIA_ROOT = BASE_DIR / 'uploads'
+
+# cria uma brecha que expoe, os dados aqui, no navegador. 
+MEDIA_IRL = '/user-media/'
+
+
+
 STATICFILES_DIRS = [BASE_DIR /'static']
 
 # Default primary key field type

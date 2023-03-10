@@ -1,5 +1,7 @@
 from django.urls import path
 
+
+
 from .views import (CharacterList ,characterPage,AddCharacter,EditCharacter, DeleteCharacter, characterDetailView,proficienceAdd,
                     addRealm,
                     editProficience,
@@ -31,7 +33,7 @@ urlpatterns = [
     #path('<slug:slug>/proficience/edit/', proficienceAdd, name='proficience-edit'),
     path('details/<slug:slug>/proficience/edit/<int:pk>/', editProficience, name='proficience-edit'),
     
-]
+] 
 
 
 

@@ -4,7 +4,8 @@ from .models import *
 
 class CharacterAdmin(admin.ModelAdmin):
     
-    prepopulated_fields = {'slug':('name','alias', 'birth_year', 'season')}
+    #prepopulated_fields = {'slug':('name','alias', 'birth_year', 'season')}
+    readonly_fields = ['slug']
 
 #BOOK refazer a parte de admin com imagens
 admin.site.register(Characters,CharacterAdmin)

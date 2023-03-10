@@ -2,12 +2,13 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
+from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from utils.rank import Rank
 
 from .models import CharacterRealm, CharacterSkills, Characters, Skills, Status, Proficience, CharacterProficience
 #-------------------Forms
-from .froms import CharacterRealmForm, ProficienceForm, StatusForm, SkillForm, CharacterSkillForm
+from .froms import CharacterForm, CharacterRealmForm, ProficienceForm, ProfileForm, StatusForm, SkillForm, CharacterSkillForm
 
 from helper.models import WeaponsType
 # Create your views here.
@@ -100,16 +101,46 @@ class characterPage(DetailView):
     context_object_name = 'character'  # muda o nome padrão do contexto
 
 
-class AddCharacter(CreateView):
-    model = Characters
-    template_name = 'character/character/add.html'
-    fields = ['name', 'alias', 'birth_year', 'season', 'periode']
+# class AddCharacter(CreateView):
+#     model = Characters
+#     template_name = 'character/character/add.html'
+#     fields = ['name', 'alias', 'birth_year', 'season', 'periode']
+
+# def store_file(file):
+#     with open('images/image.png','wb+') as dest: # images/images é o caminho que
+#         for chunk in file.chunks():
+#             dest.write(chunk)
+
+
+class AddCharacter(View):
+    def get(self,request):
+        form = CharacterForm()
+        context = {
+        'form':form
+        }
+        return render(request, 'character/character/add.html',context)
+
+    def post(self,request):
+        form = CharacterForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            print(f'	linha -------arquivo:   ------- valor:	')
+            print(form.instance)#instance serve para pegar o valor do model no caso CHARACTERS
+            print(form.instance.slug)
+            return redirect('character-page', slug=form.instance.slug)
+
+        context = {
+        'form':form
+        }
+        return render(request, 'character/character/add.html',context)
+
+
 
 
 class EditCharacter(UpdateView):
     model = Characters
-    template_name = 'character/edit_character.html'
-    fields = ['name', 'alias', 'birth_year', 'season', 'periode']
+    template_name = 'character/character/add.html'
+    fields = ['img','name', 'alias', 'birth_year', 'season', 'periode','description']
 
 
 class DeleteCharacter(DeleteView):

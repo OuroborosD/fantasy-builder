@@ -147,7 +147,7 @@ class Realms(models.Model):
 
 
 class Characters(models.Model):
-    img = models.FileField(upload_to='images/character/', default='images/character/default.png')
+    img = models.FileField(upload_to='images/character/', default='default.png')
     name = models.CharField(max_length=50)
     alias = models.CharField(max_length=50, default='N/A')
     birth_year = models.SmallIntegerField()
@@ -159,12 +159,14 @@ class Characters(models.Model):
     realm = models.ManyToManyField(Realms,through='CharacterRealm')
     description = models.TextField(default='olá eu sou goku', null=True)
 
-    def save(self, *args, **kwargs):  # sobrescreve o save metod
-        self.slug = slugify(f'{self.name} {self.alias} {self.birth_year} {self.pk}')
-        super().save(*args, **kwargs)
+
 
     def __str__(self):
-        return f'{self.pk} | {self.name}  {self.alias}'
+        return f'{self.name}  {self.alias}'
+    
+    # def save(self, *args, **kwargs):  # sobrescreve o save metod
+    #     self.slug = slugify(f'{self.name} ola  {self.alias} ')
+    #     super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse('character-page', kwargs={'slug': self.slug})

@@ -2,12 +2,15 @@ from django import forms
 from character.models import Characters, Proficience, Skills, Status, CharacterSkills, CharacterRealm
 from helper.models import WeaponsType 
 
+class ProfileForm(forms.Form):
+    img = forms.FileField(allow_empty_file=True, required=False)
 
 
 class CharacterForm(forms.ModelForm):
     class Meta:
         model=Characters
-        exclude=['slug']
+        exclude=['slug','skills','proficience','realm']
+
 
 class CharacterRealmForm(forms.ModelForm):
     class Meta:
