@@ -192,8 +192,8 @@
                     <tbody>
                         {% for proficience in proficiences %}
                         <tr>
-                            <td><a href="{% url 'proficience-edit' c.slug proficience.pk %}">{{
-                                    proficience.weapon_id.weapon}}</a></td>
+                            <td><a href="{% url 'proficience-edit' c.slug proficience.pk %}">
+                                {{proficience.weapon_id.weapon}}</a></td>
                             <td>{{ proficience.proficience_id.rank}}</td>
                             <td>{{ proficience.level}}</td>
 
@@ -244,7 +244,7 @@
                 <h3>inventario</h3>
             </a>
             <a href="{% url 'coin-add'  c.slug %}">
-                <p> possui <span class="destacar">{{gold.value}}</span> moedas de prata, na pagina <span class='destacar'> {{gold.updated_page0}}</span></p>
+                <p> possui <span class="destacar">{{gold.value}}</span> moedas de prata, na pagina <span class='destacar'> {{gold.updated_page}}</span></p>
             </a>
             <table class="table table-bordered">
                 <thead>

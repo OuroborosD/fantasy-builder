@@ -143,6 +143,8 @@ class Realms(models.Model):
 
     class Meta:
         verbose_name_plural = 'Realms'
+        #BOOK adicionar ordem
+        ordering = ['-pk']
 
 
 

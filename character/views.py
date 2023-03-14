@@ -65,7 +65,13 @@ def characterDetailView(request, slug):
 
     realm = CharacterRealm.objects.filter(fk_character=character.pk).order_by('page').last()
 
-    gold = TotalGold.objects.get(fk_character = character)
+    try:
+        gold = TotalGold.objects.get(fk_character = character)
+      
+      
+      
+    except:
+        gold = 0
 
     update_page_skill  = 0
     update_page_proficience  = 0
