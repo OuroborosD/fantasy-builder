@@ -6,9 +6,9 @@ from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from utils.rank import Rank
 
-from .models import CharacterRealm, CharacterSkills, Characters, Skills, Status, Proficience, CharacterProficience
+from .models import CharacterRealm, CharacterSkills, Characters, GoldEntries, Inventory, Skills, Status, Proficience, CharacterProficience, TotalGold
 #-------------------Forms
-from .froms import CharacterForm, CharacterRealmForm, ProficienceForm, ProfileForm, StatusForm, SkillForm, CharacterSkillForm
+from .froms import CharacterForm, CharacterRealmForm, GoldForm, InventaryForm, ProficienceForm, ProfileForm, StatusForm, SkillForm, CharacterSkillForm
 
 from helper.models import WeaponsType
 # Create your views here.
@@ -60,8 +60,12 @@ def characterDetailView(request, slug):
         """
     )
 
+    items = Inventory.objects.filter(fk_character=character).order_by('-page')[0:10]
+
 
     realm = CharacterRealm.objects.filter(fk_character=character.pk).order_by('page').last()
+
+    gold = TotalGold.objects.get(fk_character = character)
 
     update_page_skill  = 0
     update_page_proficience  = 0
@@ -88,6 +92,8 @@ def characterDetailView(request, slug):
         'skills': skill,
         'proficience_page':update_page_proficience,
         'skill_page':update_page_skill,
+        'items':items,
+        'gold':gold
     }
 
 
@@ -216,7 +222,8 @@ def skillCharacter(request, slug):
     else:
         form = CharacterSkillForm()
     context = {
-        'form': form
+        'form': form,
+        'slug': slug,
     }
 
     return render(request, 'character/skill/character.html', context)
@@ -242,7 +249,8 @@ def editSkillCharacter(request, slug, pk):
     else:
         form = CharacterSkillForm(instance=existing_skill)
     context = {
-        'form': form
+        'form': form,
+        'slug':slug
     }
 
     return render(request, 'character/skill/character.html', context)
@@ -406,7 +414,101 @@ def editProficience(request,slug, pk):
 
 
 
-############################ REALM ###################################33
+############################ INVENTORY ###################################33
+
+
+class AddItem(View):
+    
+    def get(self,request, slug):
+        
+        form = InventaryForm()
+        context = {
+        'form':form
+        }
+        return render(request, 'character/character/add.html',context)
+
+    def post(self,request,slug):
+        character = Characters.objects.get(slug=slug)
+        form = InventaryForm(request.POST)
+        if form.is_valid():
+            aux_form = form.save( commit=False)
+            aux_form.fk_character = character
+            aux_form.save()
+            # print(form.instance)#instance serve para pegar o valor do model no caso CHARACTERS
+            # print(form.instance.slug)
+            return redirect('character-page', slug=character.slug)
+
+        context = {
+        'form':form
+        }
+        return render(request, 'character/character/add.html',context)
+
+
+class EditItem(View):
+    
+    def get(self,request, slug, pk):
+        item = Inventory.objects.get(pk=pk)
+        form = InventaryForm(instance=item)
+        context = {
+        'form':form
+        }
+        return render(request, 'character/character/add.html',context)
+
+    def post(self,request,slug, pk):
+        character = Characters.objects.get(slug=slug)
+        form = InventaryForm(request.POST)
+        if form.is_valid():
+            aux_form = form.save( commit=False)
+            aux_form.fk_character = character
+            aux_form.save()
+            # print(form.instance)#instance serve para pegar o valor do model no caso CHARACTERS
+            # print(form.instance.slug)
+            return redirect('character-page', slug=character.slug)
+
+        context = {
+        'form':form
+        }
+        return render(request, 'character/character/add.html',context)
 
 
 
+class AddCoin(View):
+    
+    def get(self,request, slug):
+        form = GoldForm()
+        context = {
+        'form':form
+        }
+        return render(request, 'character/character/add.html',context)
+
+    def post(self,request,slug):
+        character = Characters.objects.get(slug=slug)
+        form = GoldForm(request.POST)
+        if form.is_valid():
+            value = float(form.cleaned_data["coin"]) * float(form.cleaned_data["value"])
+            print(f'linha 485-------arquivo: {value}------- valor:	')
+            GoldEntries.objects.create(
+                fk_character = character,
+                value = value,
+                description = form.cleaned_data["description"],
+                page = form.cleaned_data["page"],
+            )
+            try:
+                sum  = TotalGold.objects.get(fk_character = character)
+                sum.value += value
+                sum.updated_page = form.cleaned_data["page"]
+                sum.save()
+            except:
+                TotalGold.objects.create(
+                    fk_character = character,
+                    value = value,
+                    updated_page = form.cleaned_data["page"],
+                )
+            # print(form.instance)#instance serve para pegar o valor do model no caso CHARACTERS
+            # print(form.instance.slug)
+            return redirect('character-page', slug=character.slug)
+
+        context = {
+        'form':form
+        }
+        return render(request, 'character/character/add.html',context)

@@ -1,6 +1,7 @@
 from django import forms
-from character.models import Characters, Proficience, Skills, Status, CharacterSkills, CharacterRealm
-from helper.models import WeaponsType 
+from character.models import Characters, Inventory, Proficience, Skills, Status, CharacterSkills, CharacterRealm
+from helper.models import WeaponsType
+from utils.medidas import Monetary 
 
 class ProfileForm(forms.Form):
     img = forms.FileField(allow_empty_file=True, required=False)
@@ -34,8 +35,6 @@ class StatusForm(forms.ModelForm):
 
 
 
-
-
 class SkillForm(forms.ModelForm):
     class Meta:
         model = Skills
@@ -51,7 +50,7 @@ class CharacterSkillForm(forms.ModelForm):
 # class ProficienceEditModelForm(forms.ModelForm):
 #     class Meta:
 #         model = Characters
-#         fields = ['__all__']
+#         fields = '__all__'
 #         filds = ['name', 'alias']#add no field
 #         exclude = ['page'] #excluir do form
 
@@ -60,3 +59,22 @@ class CharacterSkillForm(forms.ModelForm):
 #             'alias':'is know as'
 #         }
 
+############################inventario#############################3
+
+class InventaryForm(forms.ModelForm):
+    class Meta:
+        model = Inventory
+        exclude = ['fk_character']
+        labels = {
+            'fk_item_type':'tipo'
+        }
+        widgets = {
+            'description': forms.Textarea(attrs={'cols': 30, 'rows': 10}),
+        }
+
+
+class GoldForm(forms.Form):
+    coin = forms.ChoiceField(label='coin type' ,choices=Monetary.type_coins, initial= 1)
+    value = forms.FloatField()
+    description = forms.CharField(widget=forms.Textarea(attrs={'cols': 20, 'rows': 5}), required=False)
+    page = forms.IntegerField(min_value=0)

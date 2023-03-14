@@ -40,6 +40,12 @@ class CountryType(models.Model):
     
 
 
+class ItemType(models.Model):
+    type = models.CharField(max_length=50)
+    description = models.CharField(max_length=150, null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.type}'
 
 
 ######################### time helpers############################3
@@ -53,3 +59,7 @@ class Periode(models.Model):
     periode = models.CharField(max_length=15)
     def __str__(self):
         return f'{self.periode}'
+    
+
+
+

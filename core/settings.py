@@ -39,12 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'crispy_forms',
-    'crispy_bootstrap4', 
-    'character',
     'helper',
     'geography.apps.GeographyConfig',
     'geopolitic.apps.GeopoliticConfig',
+    'character',
                     
 ]
 
@@ -94,7 +92,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'abyss',
         'USER': 'postgres',
-        'PASSWORD': '123',
+        'PASSWORD': '3540',
         'HOST': 'localhost',
         'PORT': '',
     }

@@ -2,12 +2,18 @@
 
 {% load static %}
 
-{% load crispy_forms_tags %}
+
 
 {% block css %}
 <link rel="stylesheet" href="{% static 'character/css/form.css' %}">
 {% endblock css %}
 
+{% block nav %}
+<li class="nav-item active">
+    <a class="nav-link" href="{% url 'skill-add'  slug %}">adicionar skill <span
+            class="sr-only">(current)</span></a>
+</li>
+{% endblock nav %}
 
 
 {% block content %}

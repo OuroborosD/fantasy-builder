@@ -21,7 +21,7 @@
             <div class="block" style="width: 65%;">
                 <h1 class="center-title-1">Descrição</h1>
                 <p class="text-l">
-                   {{c.description}}
+                    {{c.description}}
 
                 </p>
             </div>
@@ -86,10 +86,10 @@
 
         <h1 class="center-title-1">estatisticas do personagem</h1>
         <div class="block">
-           <a href="{% url 'realm-add' c.slug %}">
-            <p> <span class="destacar">{{c.name}}</span> possui o matial realms:  <span class="destacar">
-                {{realm.fk_realm.rank}}</span>, na pagina <span class="destacar"> {{ realm.page }}</span></p>
-           </a>
+            <a href="{% url 'realm-add' c.slug %}">
+                <p> <span class="destacar">{{c.name}}</span> possui o matial realms: <span class="destacar">
+                        {{realm.fk_realm.rank}}</span>, na pagina <span class="destacar"> {{ realm.page }}</span></p>
+            </a>
         </div>
         <hr>
         <div class="flex-container  justify-content-around ">
@@ -103,10 +103,11 @@
                     <thead>
                         <tr>
                             {% if s.pk == None or s.pk == Null %}
-                                <th scope="col">Atributo</th>
-                                {% else %}
-                                <th scope="col"><a style="color: black;" href="{% url 'status-edit' c.slug s.pk %} ">Atributo</a></th>
-                                {% endif %}
+                            <th scope="col">Atributo</th>
+                            {% else %}
+                            <th scope="col"><a style="color: black;"
+                                    href="{% url 'status-edit' c.slug s.pk %} ">Atributo</a></th>
+                            {% endif %}
                             <th scope="col">Value</th>
 
 
@@ -115,7 +116,9 @@
                     <tbody>
                         <tr>
 
-                            <a href="{% url 'status-add' c.slug %}"><td>STR</td></a>
+                            <a href="{% url 'status-add' c.slug %}">
+                                <td>STR</td>
+                            </a>
                             <td>{{s.STR}}</td>
 
 
@@ -170,10 +173,10 @@
 
             <div class="block w30">
                 <h3>proficienca</h3>
-                <a href="{% url 'proficience-add'  c.slug %}"  style="color: black;">
+                <a href="{% url 'proficience-add'  c.slug %}" style="color: black;">
                     <p>Ultima vez atualizado na pagina <span class='destacar'>{{ proficience_page }}</span></p>
                 </a>
-                
+
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -187,26 +190,27 @@
                         </tr>
                     </thead>
                     <tbody>
-                    {% for proficience in proficiences %}
-                    <tr>
-                        <td><a href="{% url 'proficience-edit' c.slug proficience.pk %}">{{ proficience.weapon_id.weapon}}</a></td>
-                        <td>{{ proficience.proficience_id.rank}}</td>
-                        <td>{{ proficience.level}}</td>
+                        {% for proficience in proficiences %}
+                        <tr>
+                            <td><a href="{% url 'proficience-edit' c.slug proficience.pk %}">{{
+                                    proficience.weapon_id.weapon}}</a></td>
+                            <td>{{ proficience.proficience_id.rank}}</td>
+                            <td>{{ proficience.level}}</td>
 
-                    </tr>
-                    {% endfor %}
-                      
+                        </tr>
+                        {% endfor %}
+
                     </tbody>
                 </table>
             </div>
             <div class="hr-div"></div>
             <div class="block w40">
                 <h3>Tecnicas aprendidas</h3>
-               
-                    <a href="{% url 'skill-character'  c.slug %}"  style="color: black;">
-                        <p> Ultima vez atualizado na pagina <span class='destacar'>{{ skill_page }}</span></p>
 
-                    </a>
+                <a href="{% url 'skill-character'  c.slug %}" style="color: black;">
+                    <p> Ultima vez atualizado na pagina <span class='destacar'>{{ skill_page }}</span></p>
+
+                </a>
 
                 <table class="table table-bordered">
                     <thead>
@@ -219,15 +223,16 @@
                     </thead>
                     <tbody>
                         {% for skill in skills %}
-                                <tr>
-                                    <td><a href="{% url 'skill-character-edit' c.slug skill.pk %}">{{skill.skill_id.rank}}</a></td>
-                                    <td>{{skill.skill_id.name}}</td>
-                                    <td>{{skill.mastery.rank}}</td>
+                        <tr>
+                            <td><a href="{% url 'skill-character-edit' c.slug skill.pk %}">{{skill.skill_id.rank}}</a>
+                            </td>
+                            <td>{{skill.skill_id.name}}</td>
+                            <td>{{skill.mastery.rank}}</td>
 
-                                </tr>
+                        </tr>
 
                         {% endfor %}
-                       
+
                     </tbody>
                 </table>
             </div>
@@ -235,8 +240,12 @@
 
         <hr>
         <div class="block w60">
-            <h3>inventario</h3>
-            <p> possui <span class="destacar">600</span> moedas de prata, na pagina <span class='destacar'> 7</span></p>
+            <a href="{% url 'item-add' c.slug %}">
+                <h3>inventario</h3>
+            </a>
+            <a href="{% url 'coin-add'  c.slug %}">
+                <p> possui <span class="destacar">{{gold.value}}</span> moedas de prata, na pagina <span class='destacar'> {{gold.updated_page0}}</span></p>
+            </a>
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -250,44 +259,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
 
-                        <td>manual</td>
-                        <td>5</td>
-                        <td>
-                            <p class="descricao-p">
-                                Não possui base firme isso permite, movimetnos rapidos, mas que podem ser fatais
-                                para o usario
-                            </p>
+                    {% for item in items %}
+                    <tr>
+                        <td><a href="{% url 'item-character-edit' c.slug item.pk %}">
+                            {{item.fk_item_type}} 
+                        </a>
                         </td>
-                        <td>renascimento</td>
 
-
+                        <td> {{item.name}} </td>
+                        <td>
+                            <p class="descricao-p"></p>{{items.description}}
+                        </td>
+                        <td> {{item.page}} </td>
                     </tr>
-                    <tr>
+                    {% endfor %}
 
-                        <td>armadura</td>
-                        <td>7</td>
-                        <td>renascimento</td>
-                        <td>renascimento</td>
-
-                    </tr>
-                    <tr>
-
-                        <td>DEX</td>
-                        <td>9</td>
-                        <td>renascimento</td>
-                        <td>renascimento</td>
-
-                    </tr>
-                    <tr>
-
-                        <td>RES</td>
-                        <td>9</td>
-                        <td>renascimento</td>
-                        <td>renascimento</td>
-
-                    </tr>
 
                 </tbody>
             </table>

@@ -2,7 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 from django.core.validators import MaxValueValidator, MinValueValidator
-from helper.models import WeaponsType, SkillMastery, Season, Periode
+from helper.models import  ItemType, WeaponsType, SkillMastery, Season, Periode
 
 from utils.rank import Rank
 # Create your models here.
@@ -239,5 +239,24 @@ class Status(models.Model):
 
 
 
+class Inventory(models.Model):
+    fk_character = models.ForeignKey(Characters, on_delete= models.CASCADE)
+    fk_item_type = models.ForeignKey(ItemType, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=200, null=True, blank=True)
+    page = models.SmallIntegerField()
 
 
+
+class GoldEntries(models.Model):
+    fk_character = models.ForeignKey(Characters, on_delete=models.CASCADE)
+    value = models.FloatField()
+    description = models.CharField(max_length=200, blank=True, null=True)
+    page = models.PositiveSmallIntegerField()
+
+class TotalGold(models.Model):
+    fk_character = models.ForeignKey(Characters, on_delete=models.CASCADE)
+    value = models.FloatField()
+    updated_page = models.PositiveSmallIntegerField()
+
+    
