@@ -182,7 +182,7 @@ def addRealm(request, slug):
         'form':form
     }
 
-    return render(request, 'character/skill/add.html', context)
+    return render(request, 'generic_form.html', context)
 
 
 

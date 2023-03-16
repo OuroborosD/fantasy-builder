@@ -13,8 +13,7 @@
 
 {% block nav %}
 <li class="nav-item active">
-    <a class="nav-link" href="{% url 'country-add' %}">criar novo país<span
-            class="sr-only">(current)</span></a>
+    <span class="sr-only"></span><a class="nav-link" href="{% url 'region-add'  slug %}">adicionar região</a></span>
 </li>
 
 {% endblock nav %}
@@ -23,15 +22,15 @@
 {% block content %}
 
 <div class="flex-container margin-m">
-{% for country in countries %}
+{% for value in values %}
     <div class="card margin-p" style="width: 280px;">
-        <a href="{% url 'region'  country.slug%}">
+        <a href="">
         <div class="card-image-holder"> 
             <img class="card-img-top card-img" src="{% static 'default/kingdom/world/village.jpg' %}" alt="Card image cap"> 
         </div>
         </a>
          <div class="card-body">
-             <h5 class="card-title">{{country.name}} {{country.rank}}</h5>
+             <h5 class="card-title">{{value.name}} {{value.rank}}</h5>
              <p class="card-text">nasceu no ano {{character.birth_year}}, possui o reino  </p> 
          </div>
     </div>
