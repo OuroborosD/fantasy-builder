@@ -32,11 +32,11 @@ class Region(models.Model):
 
     def save(self, *args, **kwargs):  # sobrescreve o save metod
         self.slug = slugify(
-            f'{self.name}  {self.localization} {self.pk}')
+            f'{self.name}   {self.pk}')
         super().save(*args, **kwargs)
 
-        def __str__(self):
-            return f'{self.name}'
+    def __str__(self):
+            return f'fk:{self.fk_country} {self.name} {self.localization}'
 
 
 class Fief(models.Model):
@@ -44,12 +44,12 @@ class Fief(models.Model):
     localization = models.ManyToManyField(Localization)
     size = models.SmallIntegerField(blank=True, null=True)
     description = models.TextField()
-    fk_region = models.ForeignKey(Country, on_delete=models.CASCADE)
+    fk_region = models.ForeignKey(Region, on_delete=models.CASCADE)
     slug = models.SlugField(default='', blank=True, null=True, db_index=True)
 
     def save(self, *args, **kwargs):  # sobrescreve o save metod
         self.slug = slugify(
-            f'{self.name}  {self.localization} {self.pk}')
+            f'{self.name} ')
         super().save(*args, **kwargs)
 
     def __str__(self):

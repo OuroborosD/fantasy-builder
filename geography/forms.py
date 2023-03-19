@@ -12,16 +12,18 @@ class CountryForm(forms.ModelForm):
 
 class RegionForm(forms.Form):
     name = forms.CharField(max_length=50)
-    localization = forms.ChoiceField(
-        choices=Localization.objects.all().values_list('id', 'name'))
+    localization = forms.ModelMultipleChoiceField(
+        queryset= Localization.objects.all(),
+    )
     description = forms.CharField(widget=forms.Textarea(
         attrs={'cols': 30, 'rows': 5}), required=False)
 
 
 class FiefForm(forms.Form):
     name = forms.CharField(max_length=50)
-    localization = forms.ChoiceField(
-        choices=Localization.objects.all().values_list('id', 'name'))
+    localization = forms.ModelMultipleChoiceField(
+        queryset= Localization.objects.all(),
+    )
     size = forms.IntegerField(min_value=0, label='size of fief in sqare meters')
     description = forms.CharField(widget=forms.Textarea(
         attrs={'cols': 30, 'rows': 5}), required=False)
@@ -38,15 +40,17 @@ class SettlementForm(forms.Form):
         queryset= Economy.objects.all(),
         widget = forms.CheckboxSelectMultiple
     )
-    localization = forms.ChoiceField(
-        choices=Localization.objects.all().values_list('id', 'name'))
+    localization = forms.ModelMultipleChoiceField(
+        queryset= Localization.objects.all(),
+    )
     description = forms.CharField(widget=forms.Textarea(
         attrs={'cols': 30, 'rows': 5}), required=False)
 
 
 class LocalForm(forms.Form):
     name = forms.CharField(max_length=50)
-    localization = forms.ChoiceField(
-        choices=Localization.objects.all().values_list('id', 'name'))
+    localization = forms.ModelMultipleChoiceField(
+        queryset= Localization.objects.all(),
+    )
     description = forms.CharField(widget=forms.Textarea(
         attrs={'cols': 30, 'rows': 5}), required=False)

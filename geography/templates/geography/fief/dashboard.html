@@ -11,29 +11,37 @@
 <link rel="stylesheet" href="{% static 'character/css/character_page.css' %}">
 {% endblock css %}
 
-{% block nav %}     
+{% block nav %}
 <li class="nav-item active">                                       
-    <span class="sr-only"></span><a class="nav-link" href="{% url 'country-edit'  slug %}">editar country</a></span>
+    <span class="sr-only"></span><a class="nav-link" href="{% url 'region-edit' slug_country  slug %}">editar região</a></span>
 </li>
 <li class="nav-item active">
-    <span class="sr-only"></span><a class="nav-link" href="{% url 'region-add'  slug %}">adicionar região</a></span>
+    <span class="sr-only"></span><a class="nav-link" href="{% url 'fief-add'  slug_country slug %}">adicionar fief</a></span>
 </li>
+
 
 {% endblock nav %}
 
 
 {% block content %}
-{{slug}}
+
 <div class="flex-container margin-m">
 {% for value in values %}
     <div class="card margin-p" style="width: 280px;">
-        <a href="{% url 'fief'  slug  value.slug %}">
+        
+        <a href="{% url 'fief'  slug_country slug%}">
             <div class="card-image-holder"> 
                 <img class="card-img-top card-img" src="{% static 'default/kingdom/world/village.jpg' %}" alt="Card image cap"> 
             </div>
             </a>
          <div class="card-body">
-             <h5 class="card-title">{{value.name}} {{value.rank}}</h5>
+             <h3 class="card-title">{{value.name}} {{value.rank}}</h3>
+             <p>localization:{% for localization in value.localization.all %}
+                               <span class="" style="font-weight: bold; font-style: italic;">
+                                {{localization}}
+                               </span>,
+                        {% endfor %}
+             </p>
              <p class="card-text">nasceu no ano {{character.birth_year}}, possui o reino  </p> 
          </div>
     </div>

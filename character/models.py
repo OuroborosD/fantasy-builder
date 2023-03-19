@@ -124,6 +124,7 @@ class Proficience(models.Model):
             MinValueValidator(50)
         ]
     )
+    description = models.TextField(null=True)
 
 
     def __str__(self):
