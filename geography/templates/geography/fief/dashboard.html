@@ -13,10 +13,10 @@
 
 {% block nav %}
 <li class="nav-item active">                                       
-    <span class="sr-only"></span><a class="nav-link" href="{% url 'region-edit' slug_country  slug %}">editar região</a></span>
+    <span class="sr-only"></span><a class="nav-link" href="{% url 'region-edit' slug_country  slug_region %}">editar região</a></span>
 </li>
 <li class="nav-item active">
-    <span class="sr-only"></span><a class="nav-link" href="{% url 'fief-add'  slug_country slug %}">adicionar fief</a></span>
+    <span class="sr-only"></span><a class="nav-link" href="{% url 'fief-add'  slug_country slug_region %}">adicionar fief</a></span>
 </li>
 
 
@@ -29,7 +29,7 @@
 {% for value in values %}
     <div class="card margin-p" style="width: 280px;">
         
-        <a href="{% url 'fief'  slug_country slug%}">
+        <a href="{% url 'settlement'  slug_country slug_region  value.slug %}">
             <div class="card-image-holder"> 
                 <img class="card-img-top card-img" src="{% static 'default/kingdom/world/village.jpg' %}" alt="Card image cap"> 
             </div>

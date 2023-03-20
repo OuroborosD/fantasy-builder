@@ -3,5 +3,5 @@ venv/
 uploads/
 
 *.sqlite3
-
+*.log
 key.py

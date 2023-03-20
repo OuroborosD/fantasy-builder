@@ -1,8 +1,9 @@
+
 from django.db import models
 from django.utils.text import slugify
 
 
-from helper.models import Economy, Localization, CountryType
+from helper.models import Economy, Localization, CountryType, Resource
 
 # Create your models here.
 
@@ -64,7 +65,7 @@ class Settlement(models.Model):
     economy = models.ManyToManyField(Economy)
     description = models.TextField()
     slug = models.SlugField(default='', blank=True, null=True, db_index=True)
-    fk_country = models.ForeignKey(Country, on_delete=models.CASCADE)
+    fk_fief= models.ForeignKey(Fief, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):  # sobrescreve o save metod
         self.slug = slugify(
@@ -79,7 +80,10 @@ class Settlement(models.Model):
 
 
 class Local(models.Model):
-    description = models.TextField()
+    name = models.CharField(max_length=50)
+    localization = models.ManyToManyField(Localization)
+    resource = models.ManyToManyField(Resource, blank=True)
+    description = models.TextField(default='N/A')
     fk_settlement = models.ForeignKey(
         Settlement, on_delete=models.CASCADE, null=True)
     fk_fief = models.ForeignKey(Fief, on_delete=models.CASCADE, null=True)

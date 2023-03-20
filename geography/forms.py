@@ -1,7 +1,7 @@
 from django import forms
 
 from geography.models import Country, Fief, Local, Region, Settlement
-from helper.models import Economy, Localization, SettlementType
+from helper.models import Economy, Localization, Resource, SettlementType
 
 
 class CountryForm(forms.ModelForm):
@@ -33,12 +33,13 @@ class SettlementForm(forms.Form):
     name = forms.CharField(max_length=50)
     population = forms.IntegerField(min_value=0)
     type = forms.ChoiceField(label='wht type of settlement is?',
-        choices=SettlementType.objects.all().values_list('id', 'name'))
+        choices=SettlementType.objects.all().values_list('name', 'name'))
     # economy = forms.ChoiceField(
     #     choices=Economy.objects.all().values_list('id', 'name'))
     economy = forms.ModelMultipleChoiceField(
         queryset= Economy.objects.all(),
-        widget = forms.CheckboxSelectMultiple
+        #widget = forms.CheckboxSelectMultiple
+       
     )
     localization = forms.ModelMultipleChoiceField(
         queryset= Localization.objects.all(),
@@ -48,7 +49,11 @@ class SettlementForm(forms.Form):
 
 
 class LocalForm(forms.Form):
-    name = forms.CharField(max_length=50)
+    name = forms.CharField(min_length=5)
+    resource = forms.ModelMultipleChoiceField(
+        required =False,
+        queryset= Resource.objects.all())
+    description = forms.CharField(max_length=50)
     localization = forms.ModelMultipleChoiceField(
         queryset= Localization.objects.all(),
     )
