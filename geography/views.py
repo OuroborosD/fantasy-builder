@@ -183,7 +183,7 @@ class FiefAdd(View):
 
             for l in form.cleaned_data["localization"]:
                 fief.localization.add(localization.get(name=l))
-            return redirect('fief', slug_country = slug_country, slug_region=slug_region)
+            return redirect('fief', slug_country=slug_country, slug_region=slug_region)
         context = {
             'form': form,
         }
@@ -195,7 +195,7 @@ class FiefAdd(View):
 class SettlementView(ListView):
     model = Settlement
     context_object_name = 'values'
-    template_name = 'geography/settlement/dashboard.html'
+    template_name = 'geography/fief/fief.html'
 
     # pega o slug que foi enviado para a classe
     def get_context_data(self, **kwargs):
@@ -212,11 +212,12 @@ class SettlementView(ListView):
         # os dois undescore, servem para acessar o valor  dela que no caso é o model
         # Country, acessa pela varial fk_country dentro do Region
         print(f'	linha 144-------arquivo: {self.kwargs}------- valor:	')
-        return Settlement.objects.filter(fk_fief__slug=self.kwargs['slug_fief'])
-
-
-
-
+        settlement =Settlement.objects.filter(fk_fief__slug=self.kwargs['slug_fief'])
+        fief = Fief.objects.get(slug=self.kwargs['slug_fief'])
+        return {
+            "fief":fief,
+            "settlement":settlement
+        }
 
 class SettlementAdd(View):
     def get(self, request, slug_country, slug_region, slug_fief):
@@ -234,12 +235,11 @@ class SettlementAdd(View):
             print(form.cleaned_data['economy'])
             economy = form.cleaned_data['economy']
 
-
             settlement = Settlement.objects.create(
                 fk_fief=Fief.objects.get(slug=slug_fief),
                 name=form.cleaned_data['name'],
-                type = form.cleaned_data['type'],
-                population = form.cleaned_data['population'],
+                type=form.cleaned_data['type'],
+                population=form.cleaned_data['population'],
                 description=form.cleaned_data['description'],
             )
             # fief.save()
@@ -248,11 +248,52 @@ class SettlementAdd(View):
                 settlement.localization.add(localization.get(name=l))
             for e in form.cleaned_data["economy"]:
                 settlement.economy.add(economy.get(name=e))
-            return redirect('settlement', slug_country = slug_country, slug_region=slug_region, slug_fief=slug_fief)
-            context = {
-                'form': form
-            }
-            return render(request, 'generic_form.html', context)
+            return redirect('settlement', slug_country=slug_country, slug_region=slug_region, slug_fief=slug_fief)
+        context = {
+            'form': form
+        }
+        return render(request, 'generic_form.html', context)
+
+
+class SettlementEdit(View):
+    def get(self, request, slug_country, slug_region, slug_fief, slug_settlement):
+        settlement = Settlement.objects.get(slug=slug_settlement)
+        form = SettlementForm()
+        form.initial['name'] = settlement.name
+        form.initial['population'] = settlement.population
+        form.initial['localization'] = settlement.localization.all()
+        form.initial['type'] = settlement.type
+        form.initial['economy'] = settlement.economy.all()
+        form.initial['description'] = settlement.description
+        context = {
+            'form': form
+        }
+        return render(request, 'generic_form.html', context)
+
+    def post(self, request, slug_country, slug_region, slug_fief, slug_settlement):
+        form = SettlementForm(request.POST)
+        localization = Localization.objects.all()
+        economy = Economy.objects.all()
+        if form.is_valid():
+            print(form.cleaned_data['economy'])
+            economy = form.cleaned_data['economy']
+            settlement = Settlement.objects.get(slug=slug_settlement)
+            settlement.name = form.cleaned_data['name']
+            settlement.type = form.cleaned_data['type']
+            settlement.population = form.cleaned_data['population']
+            settlement.description = form.cleaned_data['description']
+
+            settlement.save()
+
+            for l in form.cleaned_data["localization"]:
+                settlement.localization.add(localization.get(name=l))
+            for e in form.cleaned_data["economy"]:
+                settlement.economy.add(economy.get(name=e))
+            return redirect('local', slug_country=slug_country, slug_region=slug_region, slug_fief=slug_fief, slug_settlement=slug_settlement)
+        context = {
+            'form': form
+        }
+        return render(request, 'generic_form.html', context)
 
 
 ################################ Local  ######################################
@@ -260,7 +301,7 @@ class SettlementAdd(View):
 class LocalView(ListView):
     model = Local
     context_object_name = 'values'
-    template_name = 'geography/local/dashboard.html'
+    template_name = 'geography/settlement/settlement.html'
 
     # pega o slug que foi enviado para a classe
     def get_context_data(self, **kwargs):
@@ -270,6 +311,11 @@ class LocalView(ListView):
         context['slug_fief'] = self.kwargs['slug_fief']
         context['slug_region'] = self.kwargs['slug_region']
         context['slug_country'] = self.kwargs['slug_country']
+        context['settlement'] = Settlement.objects.get(
+            slug=self.kwargs['slug_settlement'])
+        print(
+            f'	linha 274-------arquivo:views------- valor:{context["settlement"]}	')
+        print(f'	linha 274-------arquivo:views------- valor:{self.queryset}	')
         return context
     # BOOK cmo filtar
 
@@ -278,10 +324,14 @@ class LocalView(ListView):
         # os dois undescore, servem para acessar o valor  dela que no caso é o model
         # Country, acessa pela varial fk_country dentro do Region
         print(f'	linha 144-------arquivo: {self.kwargs}------- valor:	')
-        return Local.objects.filter(fk_settlement__slug=self.kwargs['slug_settlement'])
-
-
-
+        local = Local.objects.filter(
+            fk_settlement__slug=self.kwargs['slug_settlement'])
+        settlement = Settlement.objects.get(
+            slug=self.kwargs['slug_settlement'])
+        return {
+            'local': local,
+            'settlement': settlement
+        }
 
 
 class LocalAdd(View):
@@ -309,8 +359,8 @@ class LocalAdd(View):
                 local.localization.add(localization.get(name=l))
             for r in form.cleaned_data["resource"]:
                 local.resource.add(resource.get(name=r))
-            return redirect('settlement', slug_country = slug_country, slug_region=slug_region, slug_fief=slug_fief)
-            context = {
-                'form': form
-            }
-            return render(request, 'generic_form.html', context)
+            return redirect('local', slug_country=slug_country, slug_region=slug_region, slug_fief=slug_fief, slug_settlement=slug_settlement)
+        context = {
+            'form': form
+        }
+        return render(request, 'generic_form.html', context)

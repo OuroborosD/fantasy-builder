@@ -16,7 +16,7 @@ urlpatterns = [
     #Settement
     path('<slug:slug_country>/regions/<slug:slug_region>/fief/<slug:slug_fief>/', views.SettlementView.as_view(), name='settlement'),
     path('<slug:slug_country>/regions/<slug:slug_region>/fief/<slug:slug_fief>/add/', views.SettlementAdd.as_view(), name='settlement-add'),
-    path('<slug:slug_country>/regions/<slug:slug_region>/fief/<slug:slug_fief>/settlement/<slug:slug_settlement>/edit/', views.SettlementAdd.as_view(), name='settlement-edit'),
+    path('<slug:slug_country>/regions/<slug:slug_region>/fief/<slug:slug_fief>/settlement/<slug:slug_settlement>/edit/', views.SettlementEdit.as_view(), name='settlement-edit'),
     #Local
     path('<slug:slug_country>/regions/<slug:slug_region>/fief/<slug:slug_fief>/settlement/<slug:slug_settlement>/', views.LocalView.as_view(), name='local'),
     path('<slug:slug_country>/regions/<slug:slug_region>/fief/<slug:slug_fief>/<slug:slug_settlement>/add/', views.LocalAdd.as_view(), name='local-add'),

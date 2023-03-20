@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+   
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'geography/css/style.css' %}">
+{% endblock css %}
+
+
+{% block nav %}
+<li class="nav-item active">                                       
+    <span class="sr-only"></span><a class="nav-link" href="{% url 'settlement-edit' slug_country  slug_region slug_fief slug_settlement %}">editar settlement</a></span>
+</li>
+<li class="nav-item active">
+    <span class="sr-only"></span><a class="nav-link" href="{% url 'local-add'  slug_country slug_region  slug_fief slug_settlement %}">adicionar Local</a></span>
+</li>
+{% endblock nav %}
+
+
+
+{% block content %}
+
+<section class="content flex">
+    <div class="text">
+        <h2>
+            {{ values.settlement.type }} - {{ values.settlement.name}} 
+        </h2>
+        <p>
+           {{values.settlement.description}}
+        </p>
+    </div>
+    <div class="holder flex-col">
+        <img src="{% static 'default/kingdom/world/village.jpg' %}" alt="" srcset="">
+        <ol class="flex-col">
+            <ul>população:{{values.settlement.population}}</ul>
+            <hr class="color">
+            <ul>house: darnes</ul>
+            <hr class="color">
+            <ul>
+                fiefl:
+            </ul>
+            <hr class="color">
+            <ul>
+                <p>localization:
+                    {% for localization in values.settlement.localization.all %}
+                        <span class="" style="font-weight: bold; font-style: italic;">
+                            {{localization}}
+                        </span>
+                        {% if localization == values.settlement.localization.last %}
+                            .
+                        {% else %}
+                            ,
+                        {% endif %}
+                    {% endfor %}
+                </p>
+            </ul>
+            <hr class="color">
+            <ul><p>economia:
+                {% for economy in values.settlement.economy.all %}
+                    <span class="" style="font-weight: bold; font-style: italic;">
+                        {{economy}}
+                    </span>
+                    {% if economy == values.settlement.economy.last %}
+                        .
+                    {% else %}
+                        ,
+                    {% endif %}
+                {% endfor %}
+            </p></ul>
+        </ol>
+
+    </div>
+</section>
+<section class="flex">
+
+    {% for value in values.local %}
+    <div class="card-body content-card">
+        <div class="holder"><img src="{% static 'default/kingdom/world/local.jpg' %}" alt=""></div>
+        <div>                       
+            <h2>
+                {{value.name}}
+            </h2>
+            <p>
+                Monsters:
+            </p>
+            <p>
+                Resources:              
+                {% for economy in value.resource.all %}
+                    <span class="" style="font-weight: bold; font-style: italic;">
+                        {{economy}}
+                    </span>
+                    {% if economy == value.resource.last %}
+                        .
+                    {% else %}
+                        ,
+                    {% endif %}
+            {% endfor %}
+        </p>
+            </p>
+    
+        </div>
+    </div>
+    {% endfor %}
+</section>
+
+<section class="content flex">
+    <div class="text">
+        <h1>
+            acontencimentos 
+        </h1>
+</section>
+
+
+<div class="flex-col">
+    <p class="ponto">.</p>
+    <p class="ponto">.</p>
+
+</div>
+
+<section class="content flex">
+    <div class="text">
+        <h3 class="center">
+            Nome acontecimetno
+        </h3>
+        <div class="flex start">
+            <p class="small-text">final do inverno do ano 912 - pagina 123</p>
+       
+        </div>
+        <p>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Provident molestiae quisquam voluptates nemo
+            earum eaque veniam in quaerat, veritatis dolorum deleniti repellat a similique, nulla eum aperiam ab
+            error! Nam?
+        </p>
+    </div>
+  
+</section>
+
+
+{% endblock content %}
