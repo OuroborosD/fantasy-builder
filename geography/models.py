@@ -1,7 +1,7 @@
 
 from django.db import models
 from django.utils.text import slugify
-
+from datetime import datetime
 
 from helper.models import Economy, Localization, CountryType, Resource
 
@@ -14,8 +14,11 @@ class Country(models.Model):
     slug = models.SlugField(unique=True, default='', blank=True, null=True, db_index=True)
 
     def save(self, *args, **kwargs):  # sobrescreve o save metod
-        self.slug = slugify(
-            f'{self.name}  {self.rank} {self.pk}')
+        if self.slug == None or self.slug == '' : 
+            time =  datetime.now()
+            t = time.strftime("%M%S")
+            self.slug = slugify(
+                f'{self.name}  {self.rank} {t}')
         super().save(*args, **kwargs)
 
 
@@ -32,8 +35,11 @@ class Region(models.Model):
     slug = models.SlugField(default='', blank=True, null=True, db_index=True)
 
     def save(self, *args, **kwargs):  # sobrescreve o save metod
-        self.slug = slugify(
-            f'{self.name}   {self.pk}')
+        if self.slug == None or self.slug == '' : 
+            time =  datetime.now()
+            t = time.strftime("%M%S")
+            self.slug = slugify(
+                f'{self.name}   {self.pk}')
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -49,8 +55,11 @@ class Fief(models.Model):
     slug = models.SlugField(default='', blank=True, null=True, db_index=True)
 
     def save(self, *args, **kwargs):  # sobrescreve o save metod
-        self.slug = slugify(
-            f'{self.name} ')
+        if self.slug is None: 
+            time =  datetime.now()
+            t = time.strftime("%M%S")
+            self.slug = slugify(
+                f'{self.name} {t} ')
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -68,9 +77,13 @@ class Settlement(models.Model):
     fk_fief= models.ForeignKey(Fief, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):  # sobrescreve o save metod
-        self.slug = slugify(
-            f'{self.name}   {self.pk}')
+        if self.slug == None or self.slug == '' : 
+            time =  datetime.now()
+            t = time.strftime("%M%S")
+            self.slug = slugify(
+                f'{self.name}   {t}')
         super().save(*args, **kwargs)
+
 
     def __str__(self):
         return f'{self.name}'

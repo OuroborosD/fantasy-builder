@@ -9,11 +9,11 @@
 
 {% block nav %}
 <li class="nav-item active">
-    <span class="sr-only"></span><a class="nav-link" href="{% url 'region-edit'  slug_country slug_region   %}">editar fief</a></span>
+    <span class="sr-only"></span><a class="nav-link" href="{% url 'region-edit'  slug_country values.region.slug   %}">editar region</a></span>
 </li>
 <li class="nav-item active">
     <span class="sr-only"></span><a class="nav-link"
-        href="{% url 'settlement-add'  slug_country slug_region  slug_fief %}">adicionar settlement</a></span>
+        href="{% url 'fief-add'  slug_country values.region.slug %}">adicionar fief</a></span>
 </li>
 
 {% endblock nav %}
@@ -25,10 +25,10 @@
 <section class="content flex">
     <div class="text">
         <h2>
-            {{ values.fief.name }} 
+            {{ values.region.name }}   
         </h2>
         <p>
-           {{values.fief.description}}
+           {{values.region.description}}
         </p>
     </div>
     <div class="holder flex-col">
@@ -37,12 +37,12 @@
             <ul>house: darnes</ul>
             <hr class="color">
             <ul>
-                region:
+                country: {{values.region.fk_country.name}}
             </ul>
             <hr class="color">
             <ul>
                 <p>localization:
-                    {% for localization in values.fief.localization.all %}
+                    {% for localization in values.region.localization.all %}
                         <span class="" style="font-weight: bold; font-style: italic;">
                             {{localization}}
                         </span>
@@ -61,10 +61,10 @@
 </section>
 <section class="flex">
 
-    {% for value in values.settlement %}
+    {% for value in values.fief %}
     <div class="card-body content-card">
         <div class="holder">
-            <a href="{% url 'settlement'  slug_country slug_region slug_fief  value.slug %}">
+            <a href="{% url 'fief'  slug_country slug_region value.slug %}">
             <img src="{% static 'default/kingdom/world/local.jpg' %}" alt=""></div>
         </a>
             <div>                       

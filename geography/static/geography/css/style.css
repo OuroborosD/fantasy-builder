@@ -1,3 +1,10 @@
+.w90{
+    width: 90%;
+    margin: 3rem auto;
+}
+
+
+
 body{
     margin: 0;
     font-family:  sans-serif;
@@ -16,10 +23,21 @@ hr{
     color: rgb(92, 139, 171);
 
 }
+
+.content{
+    margin:  3rem auto;
+    width: 80%;
+    border-radius: 12px;
+    padding: 12px;    
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+
+}
+
 .flex{
     display: flex;
     justify-content: space-between;
-
+    flex-wrap: wrap;
+    gap:30px;
 }
 
 
@@ -44,34 +62,29 @@ ul{
 }
 
 .holder{
-    min-width: 30%;
+    margin: 1rem auto;
     max-width: 300px;
     border-radius: 10px;
     border:  4px solid rgb(92, 139, 171);
 }
 
 
+.info{
+width: 25%;
+}
 
 img{
-    display: block;
+    
     width: 100%;
     border-radius: 10px;
     border-bottom: 4px solid rgb(92, 139, 171);
 
 }
 
-.content{
-    margin:  3rem auto;
-    width: 80%;
-    border-radius: 12px;
-    padding: 12px;
-    background-color: rgba(229, 229, 229, 0.41);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
-
-}
 
 .card-body{
-    max-width: 300px;
+    min-width: 250px;
+    max-width: 15%;
     margin:  3rem auto;
     border-radius: 12px;
     padding: 12px;
@@ -82,6 +95,8 @@ img{
 
 
 .text{
+    width: 70%;
+    max-width: 70%;
     margin-right: 12px;
 }
 
@@ -95,8 +110,7 @@ img{
 }
 
 .card-body:hover{
-    padding: 12px;
-    max-width: 310px;
+
     margin:  3rem auto;
     border-radius: 12px;
     padding: 12px;
