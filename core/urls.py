@@ -20,6 +20,8 @@ from django.conf import settings # NEW,  importar os settings.
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('characters/',include('character.urls')),
-    path('',include('geography.urls')),
+    #path('characters/',include('character.urls')),
+    path('',include('helper.urls')),        
+    path('<slug:slug_book>/world/', include('geography.urls')),
+    path('<slug:slug_book>/characters/', include('murim.urls')),
 ]+ static(settings.MEDIA_URL,   document_root=settings.MEDIA_ROOT)

@@ -1,4 +1,14 @@
 
-a{
+
+
+.a-link{
     text-decoration: none;
+    color: black;    
+}
+
+
+.container-70{
+    width: 70%;
+    margin: 3rem auto;
+
 }

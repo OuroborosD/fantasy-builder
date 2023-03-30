@@ -9,11 +9,11 @@
 
 {% block nav %}
 <li class="nav-item active">
-    <span class="sr-only"></span><a class="nav-link" href="{% url 'region-edit'  slug_country slug_region   %}">editar fief</a></span>
+    <span class="sr-only"></span><a class="nav-link" href="{% url 'fief-edit' slug_book slug_country slug_region values.fief.slug  %}">editar fief</a></span>
 </li>
 <li class="nav-item active">
     <span class="sr-only"></span><a class="nav-link"
-        href="{% url 'settlement-add'  slug_country slug_region  slug_fief %}">adicionar settlement</a></span>
+        href="{% url 'settlement-add' slug_book slug_country slug_region  slug_fief %}">adicionar settlement</a></span>
 </li>
 
 {% endblock nav %}
@@ -37,7 +37,7 @@
             <ul>house: darnes</ul>
             <hr class="color">
             <ul>
-                region:
+                region:{{values.fief.fk_region.name}}
             </ul>
             <hr class="color">
             <ul>
@@ -64,7 +64,7 @@
     {% for value in values.settlement %}
     <div class="card-body content-card">
         <div class="holder">
-            <a href="{% url 'settlement'  slug_country slug_region slug_fief  value.slug %}">
+            <a href="{% url 'settlement'  slug_book slug_country slug_region slug_fief  value.slug %}">
             <img src="{% static 'default/kingdom/world/local.jpg' %}" alt=""></div>
         </a>
             <div>                       

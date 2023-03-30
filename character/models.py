@@ -1,8 +1,14 @@
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
+from django.conf import settings
+from core import settings
+
+from PIL import Image
+import os
+
 from django.core.validators import MaxValueValidator, MinValueValidator
-from helper.models import  ItemType, WeaponsType, SkillMastery, Season, Periode
+from helper.models import  Books, ItemType, WeaponsType, SkillMastery, Season, Periode
 
 from utils.rank import Rank
 # Create your models here.
@@ -95,137 +101,60 @@ weapon_list = (
 ##########################################################################
 
 
-class Skills(models.Model):
-    type_skill = models.CharField(max_length=20, choices=Rank().skill_type)
-    weapon_type = models.SmallIntegerField( choices=WeaponsType.objects.all().values_list('id','weapon'))
-    name = models.CharField(max_length=50)
-    rank = models.CharField(max_length=20, choices=Rank().skill_rank)
-    sub_rank = models.CharField(max_length=6, choices=Rank().skill_sub_rank)
-    description = models.TextField()
-    bonus_status = models.CharField(max_length=20)
-    time = models.SmallIntegerField()
-    bonus_1 = models.SmallIntegerField()
-    bonus_2 = models.SmallIntegerField()
-    bonus_3 = models.SmallIntegerField()
-    bonus_4 = models.SmallIntegerField()
-    bonus_5 = models.SmallIntegerField()
-
-    def __str__(self):
-        return f'{self.name} | {self.rank}'
-
-
-class Proficience(models.Model):
-    rank = models.CharField(max_length=20, choices=Rank().proficience_rank)
-    learning = models.SmallIntegerField()
-    damage = models.SmallIntegerField()
-    control = models.SmallIntegerField()
-    aura = models.SmallIntegerField(
-         validators=[
-            MinValueValidator(50)
-        ]
-    )
-    description = models.TextField(null=True)
-
-
-    def __str__(self):
-        return f'{self.pk}: {self.rank} -- learning: {self.learning}% control:{self.control}'
-
-class Realms(models.Model):
-    rank_position = models.SmallIntegerField()
-    rank = models.CharField(max_length=20, choices=realm)
-    bonus_physic = models.SmallIntegerField()
-    limit_spiritual = models.SmallIntegerField()
-    bonus_spiritual = models.SmallIntegerField()
-    limit_physic = models.SmallIntegerField()
-    description = models.TextField(default='N/A')
-
-    def __str__(self):
-        return f'{self.rank_position}:{self.rank}   atritutos:{self.bonus_physic }/{self.limit_physic} |  atritutos_espitiruais:{self.bonus_spiritual }/{self.limit_spiritual}'
-
-    class Meta:
-        verbose_name_plural = 'Realms'
-        #BOOK adicionar ordem
-        ordering = ['-pk']
 
 
 
 class Characters(models.Model):
-    img = models.FileField(upload_to='images/character/', default='images/character/default.png')
+    fk_book = models.ForeignKey(Books, on_delete=models.SET_NULL, null=True)
+    img = models.ImageField(upload_to='images/character/', default='images/character/default.png')
     name = models.CharField(max_length=50)
     alias = models.CharField(max_length=50, default='N/A')
+    alive = models.CharField(max_length=20, choices=(('alive','alive'),('death','death')))
     birth_year = models.SmallIntegerField()
     season = models.ForeignKey(Season, on_delete=models.SET_NULL, null=True)
     periode = models.ForeignKey(Periode,on_delete=models.SET_NULL, null=True)
-    slug = models.SlugField(default='', blank=True, null=True, db_index=True)
-    skills = models.ManyToManyField(Skills, through='CharacterSkills')
-    proficience = models.ManyToManyField(Proficience, through='CharacterProficience')
-    realm = models.ManyToManyField(Realms,through='CharacterRealm')
     description = models.TextField(default='olá eu sou goku', null=True)
+    slug = models.SlugField(default='', blank=True, null=True, db_index=True)
 
+    @staticmethod
+    def resizeImg(img):
+        print(f'	linha 121-------arquivo:   ------- valor:{img.url}	')
+        #pega o caminho completo
+        full_path = os.path.join(settings.MEDIA_ROOT , img.name)
+        #chama o pilo e passa  caminho da imagem
+        img_pillow = Image.open(full_path)
+        #muda o tamanho da imagem
+        width, heigth = img_pillow.size
+        if width <= 350:
+            img_pillow.close()
+            return 
+        new_img = img_pillow.resize((350,480), Image.LANCZOS)
+        new_img.save(
+            full_path,
+        optimize=True,
+                 )
+        return
     def save(self, *args, **kwargs):  # sobrescreve o save metod
+        
         self.slug = slugify(f'{self.name} {self.alias} {self.birth_year} {self.pk}')
-        super().save(*args, **kwargs)
+        #salva  o registro primeiro, e depois consegue redimencionar
+        saved = super().save(*args, **kwargs)
+        if self.img:
+            self.resizeImg(self.img)
+
+        return saved
 
     def __str__(self):
         return f'{self.pk} | {self.name}  {self.alias}'
+   
 
-    def get_absolute_url(self):
-        return reverse('character-page', kwargs={'slug': self.slug})
 
     class Meta:
         verbose_name_plural = 'Character Entries'
 
-
-class CharacterRealm(models.Model):
-    fk_character = models.ForeignKey(Characters, on_delete=models.CASCADE)
-    fk_realm = models.ForeignKey(Realms, on_delete=models.CASCADE)
-    page = models.SmallIntegerField()
-
-class CharacterSkills(models.Model):
-    character_id = models.ForeignKey(Characters, on_delete=models.CASCADE)
-    skill_id = models.ForeignKey(Skills, on_delete=models.CASCADE)
-    mastery = models.ForeignKey(SkillMastery, on_delete=models.SET_DEFAULT, default=0)
-    page = models.SmallIntegerField()
-
-    class Meta:
-        verbose_name_plural = 'character Skills'
-
-    def __str__(self):
-        return f' {self.pk} : {self.skill_id} | {self.mastery} page: {self.page}'
+    
 
 
-class CharacterProficience(models.Model):
-    character_id = models.ForeignKey(Characters, on_delete=models.CASCADE)
-    proficience_id = models.ForeignKey(Proficience, on_delete=models.CASCADE)
-    weapon_id = models.ForeignKey(WeaponsType, on_delete=models.CASCADE)
-    level = models.SmallIntegerField(
-        validators=[
-            MaxValueValidator(10),
-            MinValueValidator(0)
-        ])
-    page = models.SmallIntegerField()
-
-    def __str__(self):
-        return f'{self.pk}: {self.weapon_id} | {self.proficience_id}'
-
-
-class Status(models.Model):
-    STR = models.SmallIntegerField()
-    AGI = models.SmallIntegerField()
-    DEX = models.SmallIntegerField()
-    RES = models.SmallIntegerField()
-    CON = models.SmallIntegerField()
-    KY = models.SmallIntegerField()
-    CTL = models.SmallIntegerField()
-    PER = models.SmallIntegerField()
-    page = models.SmallIntegerField()
-    fk_character = models.ForeignKey(Characters, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f' {self.page} {self.fk_character}'
-
-    class Meta:
-        verbose_name_plural = 'Status Entries'
 
 
 # class Skills(models.Model):

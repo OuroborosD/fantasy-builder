@@ -9,11 +9,11 @@
 
 {% block nav %}
 <li class="nav-item active">
-    <span class="sr-only"></span><a class="nav-link" href="{% url 'country-edit'  slug_country  %}">editar country</a></span>
+    <span class="sr-only"></span><a class="nav-link" href="{% url 'country-edit' slug_book slug_country  %}">editar country</a></span>
 </li>
 <li class="nav-item active">
     <span class="sr-only"></span><a class="nav-link"
-        href="{% url 'region-add'  slug_country  %}">adicionar region</a></span>
+        href="{% url 'region-add' slug_book  slug_country  %}">adicionar region</a></span>
 </li>
 
 {% endblock nav %}
@@ -47,7 +47,7 @@
                         <span class="" style="font-weight: bold; font-style: italic;">
                             {{localization}}
                         </span>
-                        {% if localization == values.fief.localization.last %}
+                        {% if localization == values.region.localization.last %}
                             .
                         {% else %}
                             ,
@@ -62,41 +62,43 @@
 </section>
 <section class="flex w90">
 
-    {% for value in values.region %}
-    <div class="card-body content-card">
-        <div class="holder">
-            <a href="{% url 'region'  slug_country  value.slug %}">
-            <img src="{% static 'default/kingdom/world/local.jpg' %}" alt=""></div>
-        </a>
-            <div>                       
-            <h2>
-                {{value.name}}
-            </h2>
-            <p>localization:{% for localization in value.localization.all %}
-                <span class="" style="font-weight: bold; font-style: italic;">
-                    {{localization}}
-                </span>{% if localization == value.localization.last %}
-                        .
-                    {% else %}
-                        ,
-                    {% endif %}
-                {% endfor %}
-            </p>
-            <p>economia:{% for economy in value.economy.all %}
-                <span class="" style="font-weight: bold; font-style: italic;">
-                    {{economy}}
-                </span>{% if economy == value.economy.last %}
-                .
-            {% else %}
-            ,
-            {% endif %}
-                {% endfor %}
-            </p>
-    
+
+  {% for value in values.region %}
+  <div class="card-body content-card">
+      <div class="holder">
+          <a href="{% url 'region' slug_book slug_country  value.slug %}">
+          <img src="{% static 'default/kingdom/world/local.jpg' %}" alt=""></div>
+      </a>
+          <div>                       
+          <h2>
+              {{value.name}}
+          </h2>
+          <p>localization:{% for localization in value.localization.all %}
+              <span class="" style="font-weight: bold; font-style: italic;">
+                  {{localization}}
+              </span>{% if localization == value.localization.last %}
+                      .
+                  {% else %}
+                      ,
+                  {% endif %}
+              {% endfor %}
+          </p>
+          <p>economia:{% for economy in value.economy.all %}
+              <span class="" style="font-weight: bold; font-style: italic;">
+                  {{economy}}
+              </span>{% if economy == value.economy.last %}
+              .
+          {% else %}
+          ,
+          {% endif %}
+      </p>
+              {% endfor %}
+              
+            </div>
+            
         </div>
-   
-    </div>
-    {% endfor %}
+        {% endfor %}
+
 </section>
 
 <section class="content flex">

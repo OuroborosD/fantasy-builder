@@ -1,4 +1,8 @@
+import datetime
 from django.db import models
+from django.utils.text import slugify
+from datetime import datetime
+
 
 # Create your models here.
 
@@ -71,7 +75,7 @@ class RelatioshipsType(models.Model):
 
 
 
-######################### time helpers############################3
+######################### time helpers ############################3
 
 class Season(models.Model):
     season = models.CharField(max_length=15)
@@ -82,7 +86,29 @@ class Periode(models.Model):
     periode = models.CharField(max_length=15)
     def __str__(self):
         return f'{self.periode}'
-    
 
+
+###################### book ##################################
+
+class BookColection(models.Model):
+    name = models.CharField(max_length=50)
+
+
+
+class Books(models.Model):
+    title = models.CharField(max_length=80)
+    subtitle = models.CharField(max_length=80)
+    is_colection = models.BooleanField(default=False)
+    type = models.CharField(max_length=30, choices=(('murim','murim'),('fantasy','fantasy'),))
+    colection = models.ForeignKey(BookColection, on_delete=models.SET_NULL, null=True)
+    slug = models.SlugField(unique=True, default='', blank=True, null=True, db_index=True)
+
+    
+    def save(self, *args, **kwargs):  # sobrescreve o save metod
+        time =  datetime.now()
+        t = time.strftime("%M%S")
+        self.slug = slugify(
+            f'{self.title} {t} {self.subtitle} ')
+        super().save(*args, **kwargs)
 
 

@@ -4,6 +4,7 @@ from helper.models import (WeaponsType, SkillMastery, Localization, Economy, Cou
 , ItemType
 , SettlementType
 ,Resource
+,Books, BookColection
 # Register your models here.
 )
 
@@ -17,3 +18,4 @@ admin.site.register(Periode)
 admin.site.register(SettlementType)
 admin.site.register(ItemType)
 admin.site.register(Resource)
+admin.site.register(Books)

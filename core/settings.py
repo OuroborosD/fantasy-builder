@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'geography.apps.GeographyConfig',
     'geopolitic.apps.GeopoliticConfig',
     'character',
+    'murim',
                     
 ]
 
@@ -90,7 +91,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'abyss',
+        'NAME': 'dev2',
         'USER': 'postgres',
         'PASSWORD': '3540',
         'HOST': 'localhost',

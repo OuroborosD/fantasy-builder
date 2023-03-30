@@ -9,11 +9,11 @@
 
 {% block nav %}
 <li class="nav-item active">
-    <span class="sr-only"></span><a class="nav-link" href="{% url 'region-edit'  slug_country values.region.slug   %}">editar region</a></span>
+    <span class="sr-only"></span><a class="nav-link" href="{% url 'region-edit' slug_book slug_country values.region.slug   %}">editar region</a></span>
 </li>
 <li class="nav-item active">
     <span class="sr-only"></span><a class="nav-link"
-        href="{% url 'fief-add'  slug_country values.region.slug %}">adicionar fief</a></span>
+        href="{% url 'fief-add' slug_book  slug_country values.region.slug %}">adicionar fief</a></span>
 </li>
 
 {% endblock nav %}
@@ -64,7 +64,7 @@
     {% for value in values.fief %}
     <div class="card-body content-card">
         <div class="holder">
-            <a href="{% url 'fief'  slug_country slug_region value.slug %}">
+            <a href="{% url 'fief' slug_book slug_country slug_region value.slug %}">
             <img src="{% static 'default/kingdom/world/local.jpg' %}" alt=""></div>
         </a>
             <div>                       

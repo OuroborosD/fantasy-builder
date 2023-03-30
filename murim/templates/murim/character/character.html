@@ -1,0 +1,245 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block nav %}
+<li class="nav-item active">
+  <a class="nav-link" href="{% url 'character-list' slug_book %}">
+      ir para lista de Characters
+  </a>
+</li>
+<li class="nav-item active">
+  <a class="nav-link" href="{% url 'character-murim-edit' slug_book character.slug %}">
+      Editar Character
+  </a>
+</li>
+
+{% endblock %}
+
+
+
+
+{% block content%}
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="card mb-4">
+        <img class="card-img-top" src="{{character.img.url}}" alt="Character Image">
+        <div class="card-body">
+          <h2 class="card-title">{{character.name}}</h2>
+          <p class="card-text">{{character.alias}}</p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">Race: Human</li>
+          <li class="list-group-item"><a href="{% url 'realm-add' slug_book character.slug %}">Realm: {{realm.fk_realm.rank}} {{realm.rank}} </a></li>
+          <li class="list-group-item">status: {{character.alive}}</li>
+        </ul>
+
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <h4 class="mb-4">Description</h4>
+      <p>
+        {{character.description}}
+      </p>
+
+    </div>
+
+
+  </div>
+</div>
+</div>
+
+<div class="container">
+  <div class="card mb-4">
+    <div class="card-body">
+      <h1 class="card-title">Proficience</h1>
+      <p><span class="small">
+          <a href="{% url 'proficience-add'  slug_book character.slug %}" class="a-link">
+          atualizado na pagina {{first_proficience.page}}
+        </a>
+        </span></p>
+        <div class="row">
+
+         {% for proficience in proficiences %}
+            <div class="col-md-4 mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <h2 class="card-title">{{proficience.weapon_id.weapon}} {{proficience.fk_proficience.rank}}</h2>
+                  <p class="card-text">level: {{proficience.level}}</p>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<div class="container">
+  <div class="card mb-4">
+    <div class="card-body">
+      <h1 class="card-title">Attributes</h1>
+      <p><span class="small">
+        {% if realm %}
+          <a href="
+          {% url 'atribute-add'  slug_book character.slug  realm.fk_realm.pk %}
+          " class="a-link">
+          atualizado na pagina {{atribute.page}}
+          {% endif%}
+        </a>
+        </span></p>
+        <div class="row">
+          <div class="col-md-4 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Str</h5>
+                <p class="card-text">{{atribute.STR}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Dex</h5>
+                <p class="card-text">{{atribute.DEX}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Agi</h5>
+                <p class="card-text">{{atribute.AGI}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Constituição</h5>
+                <p class="card-text">{{atribute.CON}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Res</h5>
+                <p class="card-text">{{atribute.RES}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Percepção</h5>
+                <p class="card-text">{{atribute.STR}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Control</h5>
+                <p class="card-text">{{atribute.CTL}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Ky</h5>
+                <p class="card-text">{{atribute.KY}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="card mb-4">
+    <div class="card-body">
+      <h2 class="card-title">Skills</h2>
+      <p><span class="small">
+        <a href="{% url 'skill-add'  slug_book character.slug %}" class="a-link">
+        last time updated, page {{first_skill.page}}.
+      </a>
+      </span></p>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>name</th>
+            <th>rank</th>
+            <th>mastery</th>
+            <th>page</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for skill in skills %}
+          <tr>
+              <td><a href="">
+                {{skill.fk_skill.name}}
+              </a>
+            </td>
+            <td>
+                {{skill.fk_skill.rank}} {{skill.fk_skill.sub_rank}}
+              </td>
+              <td data-toggle="tooltip" data-placement="bottom" title="{{skill.mastery.description}}">{{skill.mastery.rank}}</td>
+              <td>{{skill.page}}</td>
+        
+          </tr>
+        
+          {% endfor %}
+        
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="container">
+  <div class="card mb-4">
+    <div class="card-body">
+      <h2 class="card-title"><a href="{% url 'item-add' slug_book character.slug %}">Inventary</a></h2>
+      <p class="card-text"><a href="{% url 'coin-add' slug_book character.slug %}">possui {{gold.value}} moedas de ouro</a></p>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>name</th>
+            <th>item type</th>
+            <th>description</th>
+            <th>page</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in itens %}
+          <tr>
+            <td><a href="{% url 'item-edit' slug_book character.slug item.pk %}">
+                {{item.name}}
+              </a>
+            </td>
+            <td>
+              {{item.fk_item_type.type}}
+              </td>
+              <td data-toggle="tooltip" data-placement="bottom" title="{{item.description}}">{{item.description}}</td>
+              <td>{{item.page}}</td>
+        
+          </tr>
+        
+          {% endfor %}
+        
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

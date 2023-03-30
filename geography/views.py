@@ -1,11 +1,12 @@
+from audioop import reverse
 from django.shortcuts import redirect, render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, View, ListView, CreateView, UpdateView
 from geography.forms import CountryForm, FiefForm, LocalForm, RegionForm, SettlementForm
 
 from geography.models import Country, Fief, Local, Region, Settlement
-from helper.models import Economy, Localization, Resource
+from helper.models import Books, Economy, Localization, Resource
 # Create your views here.
 
 
@@ -21,14 +22,39 @@ class Countries(ListView):
     model = Country
     context_object_name = 'countries'
     template_name = 'geography/dashboard.html'
+    def get_context_data(self, **kwargs, ):
+        context = super(Countries, self).get_context_data(**kwargs)
+        print(f'	linha 26-------arquivo: {self.kwargs}------- valor:	')
+        context['slug_book'] = self.kwargs['slug_book']
 
+        return context
+
+    def get_queryset(self, **kwargs):
+        # BOOK acessando model pai pela FK
+        # os dois undescore, servem para acessar o valor  dela que no caso é o model
+        # Country, acessa pela varial fk_country dentro do Region
+        country = Country.objects.filter(fk_book__slug = self.kwargs['slug_book'])
+        return country
 
 class CountriesAdd(CreateView):
     model = Country
     context_object_name = 'form'
     form_class = CountryForm
     template_name = 'generic_form.html'
-    success_url = reverse_lazy('country')
+    #success_url = redirect('country-list', slug=object.kwargs[''])
+    
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('country-list', kwargs={'slug_book': self.kwargs['slug_book']})
+    
+    def form_valid(self, form):
+        self.object = form.save(False)
+        # make change at the object
+        book =  Books.objects.get(slug=self.kwargs['slug_book'])
+        self.object.fk_book = book
+        print(f'	linha 43-------arquivo: {self.object.fk_book}------- valor:	')
+        self.object.save()
+        
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class CountryUpdate(UpdateView):
@@ -37,12 +63,12 @@ class CountryUpdate(UpdateView):
     fields = ['name', 'rank']
     slug_field = 'slug'
     slug_url_kwarg = 'slug_country'
-    print(slug_url_kwarg)
-    print(f'	linha 41-------arquivo: {slug_url_kwarg}------- valor:	')
 
     def get_success_url(self):
         #                    URL_name          Name_filed_url : object_atribute
-        return reverse_lazy('country', kwargs={'slug_country': self.object.slug})
+        #BOOK como pegar o valor do objeto
+        print(f'	linha 65------arquivo: {self.object.slug}------- valor:	')
+        return reverse_lazy('country', kwargs={'slug_country': self.object.slug,'slug_book':self.kwargs['slug_book']})
 
 
 class CountryView(ListView):
@@ -54,6 +80,7 @@ class CountryView(ListView):
     def get_context_data(self, **kwargs, ):
         context = super(CountryView, self).get_context_data(**kwargs)
 
+        context['slug_book'] = self.kwargs['slug_book']
         context['slug_country'] = self.kwargs['slug_country']
 
         return context
@@ -82,6 +109,7 @@ class RegionView(ListView):
     def get_context_data(self, **kwargs):
         context = super(RegionView, self).get_context_data(**kwargs)
         print(f'	linha 136-------arquivo: {self.kwargs}------- valor:')
+        context['slug_book'] = self.kwargs['slug_book']
         context['slug_region'] = self.kwargs['slug_region']
         context['slug_country'] = self.kwargs['slug_country']
         return context
@@ -102,15 +130,15 @@ class RegionView(ListView):
 
 
 class RegionAdd(View):
-    def get(self, request, slug):
+    def get(self, request, slug_country,slug_book):
         form = RegionForm()
         context = {
             'form': form,
         }
         return render(request, 'generic_form.html', context)
 
-    def post(self, request, slug):
-        country = Country.objects.get(slug=slug)
+    def post(self, request, slug_country,slug_book):
+        country = Country.objects.get(slug=slug_country)
         localization = Localization.objects.all()
         form = RegionForm(request.POST)
 
@@ -127,7 +155,7 @@ class RegionAdd(View):
             region.save()
             for l in form.cleaned_data["localization"]:
                 region.localization.add(localization.get(name=l))
-            return redirect('country', slug_country=country.slug)
+            return redirect('country', slug_country=country.slug, slug_book=slug_book)
         context = {
             'form': form,
         }
@@ -135,7 +163,7 @@ class RegionAdd(View):
 
 
 class RegionEdit(View):
-    def get(self, request, slug_country, slug_region):
+    def get(self, request,slug_book, slug_country, slug_region):
         form = RegionForm()
         region = Region.objects.get(fk_country__slug = self.kwargs['slug_country'],slug=slug_region)
         form.initial['name'] = region.name
@@ -146,7 +174,7 @@ class RegionEdit(View):
         }
         return render(request, 'generic_form.html', context)
 
-    def post(self, request, slug_country, slug_region):
+    def post(self, request,slug_book, slug_country, slug_region):
         country = Country.objects.get(slug=slug_country)
 
         localization = Localization.objects.all()
@@ -162,7 +190,7 @@ class RegionEdit(View):
             region.save()
             for l in form.cleaned_data["localization"]:
                 region.localization.add(localization.get(name=l))
-            return redirect('region', slug_country=country.slug, slug_region= region.slug)
+            return redirect('region',slug_book=slug_book, slug_country=country.slug, slug_region= region.slug)
         context = {
             'form': form,
         }
@@ -184,6 +212,7 @@ class FiefView(ListView):
         context['slug_fief'] = self.kwargs['slug_fief']
         context['slug_region'] = self.kwargs['slug_region']
         context['slug_country'] = self.kwargs['slug_country']
+        context['slug_book'] = self.kwargs['slug_book']
         return context
     # BOOK cmo filtar
 
@@ -203,14 +232,14 @@ class FiefView(ListView):
 
 
 class FiefAdd(View):
-    def get(self, request, slug_country, slug_region):
+    def get(self, request, slug_book,slug_country, slug_region):
         form = FiefForm()
         context = {
             'form': form,
         }
         return render(request, 'generic_form.html', context)
 
-    def post(self, request, slug_country, slug_region):
+    def post(self, request, slug_book, slug_country, slug_region):
         region = Region.objects.get(fk_country__slug = self.kwargs['slug_country'],slug=slug_region)
         localization = Localization.objects.all()
         form = FiefForm(request.POST)
@@ -229,7 +258,7 @@ class FiefAdd(View):
 
             for l in form.cleaned_data["localization"]:
                 fief.localization.add(localization.get(name=l))
-            return redirect('region', slug_country=slug_country, slug_region=slug_region)
+            return redirect('region', slug_book=slug_book, slug_country=slug_country, slug_region=slug_region)
         context = {
             'form': form,
         }
@@ -237,19 +266,19 @@ class FiefAdd(View):
 
 
 class FiefEdit(View):
-
-    def get(self, request, slug_country, slug_region, slug_fief):
+    def get(self, request, slug_book, slug_country, slug_region, slug_fief):
         fief = Fief.objects.get(slug= slug_fief)
         form = FiefForm()
         form.initial['name'] = fief.name
         form.initial['localization'] = fief.localization.all()
-        form.initial['seize'] = fief.size
+        form.initial['size'] = fief.size
+        form.initial['description'] = fief.description
         context = {
             'form': form,
         }
         return render(request, 'generic_form.html', context)
 
-    def post(self, request, slug_country, slug_region, slug_fief):
+    def post(self, request, slug_book, slug_country, slug_region, slug_fief):
         region = Region.objects.get(slug=slug_region)
         localization = Localization.objects.all()
         form = FiefForm(request.POST)
@@ -259,14 +288,14 @@ class FiefEdit(View):
             # para salvar many-to-many feild, que no caso é outra tabela
             # crie o objeto sabe ele, e depois adicione o atributo com o metodo .add()
             
-            fief.name=form.cleaned_data['name'],
-            fief.size=form.cleaned_data['size'],
-            fief.description=form.cleaned_data['description'],
-            # fief.save()
+            fief.name=form.cleaned_data['name']
+            fief.size=form.cleaned_data['size']
+            fief.description=form.cleaned_data['description']
+            fief.save()
 
             for l in form.cleaned_data["localization"]:
                 fief.localization.add(localization.get(name=l))
-            return redirect('fief', slug_country=slug_country, slug_region=slug_region)
+            return redirect('fief',slug_book=slug_book, slug_country=slug_country, slug_region=slug_region, slug_fief= fief.slug)
         context = {
             'form': form,
         }
@@ -290,6 +319,8 @@ class SettlementView(ListView):
         context['slug_fief'] = self.kwargs['slug_fief']
         context['slug_region'] = self.kwargs['slug_region']
         context['slug_country'] = self.kwargs['slug_country']
+        context['slug_book'] = self.kwargs['slug_book']
+        
         print(
             f'	linha 357-------arquivo:views------- valor:{self.kwargs["slug_settlement"]}	')
         context['slug_settlement'] = self.kwargs['slug_settlement']
@@ -314,14 +345,14 @@ class SettlementView(ListView):
 
 
 class SettlementAdd(View):
-    def get(self, request, slug_country, slug_region, slug_fief):
+    def get(self, request, slug_book, slug_country, slug_region, slug_fief):
         form = SettlementForm()
         context = {
             'form': form
         }
         return render(request, 'generic_form.html', context)
 
-    def post(self, request, slug_country, slug_region, slug_fief):
+    def post(self, request, slug_book, slug_country, slug_region, slug_fief):
         form = SettlementForm(request.POST)
         localization = Localization.objects.all()
         economy = Economy.objects.all()
@@ -342,7 +373,7 @@ class SettlementAdd(View):
                 settlement.localization.add(localization.get(name=l))
             for e in form.cleaned_data["economy"]:
                 settlement.economy.add(economy.get(name=e))
-            return redirect('fief', slug_country=slug_country, slug_region=slug_region, slug_fief=slug_fief)
+            return redirect('fief',slug_book=slug_book,  slug_country=slug_country, slug_region=slug_region, slug_fief=slug_fief)
         context = {
             'form': form
         }
@@ -350,7 +381,7 @@ class SettlementAdd(View):
 
 
 class SettlementEdit(View):
-    def get(self, request, slug_country, slug_region, slug_fief, slug_settlement):
+    def get(self, request, slug_book, slug_country, slug_region, slug_fief, slug_settlement):
         settlement = Settlement.objects.get(slug=slug_settlement)
         form = SettlementForm()
         form.initial['name'] = settlement.name
@@ -364,7 +395,7 @@ class SettlementEdit(View):
         }
         return render(request, 'generic_form.html', context)
 
-    def post(self, request, slug_country, slug_region, slug_fief, slug_settlement):
+    def post(self, request, slug_book, slug_country, slug_region, slug_fief, slug_settlement):
         form = SettlementForm(request.POST)
         localization = Localization.objects.all()
         economy = Economy.objects.all()
@@ -383,7 +414,7 @@ class SettlementEdit(View):
                 settlement.localization.add(localization.get(name=l))
             for e in form.cleaned_data["economy"]:
                 settlement.economy.add(economy.get(name=e))
-            return redirect('local', slug_country=slug_country, slug_region=slug_region, slug_fief=slug_fief, slug_settlement=slug_settlement)
+            return redirect('settlement', slug_book=slug_book, slug_country=slug_country, slug_region=slug_region, slug_fief=slug_fief, slug_settlement=settlement.slug)
         context = {
             'form': form
         }
@@ -395,14 +426,14 @@ class SettlementEdit(View):
 
 
 class LocalAdd(View):
-    def get(self, request, slug_country, slug_region, slug_fief, slug_settlement):
+    def get(self, request,slug_book, slug_country, slug_region, slug_fief, slug_settlement):
         form = LocalForm()
         context = {
             'form': form
         }
         return render(request, 'generic_form.html', context)
 
-    def post(self, request, slug_country, slug_region, slug_fief, slug_settlement):
+    def post(self, request, slug_book, slug_country, slug_region, slug_fief, slug_settlement):
         form = LocalForm(request.POST)
         localization = Localization.objects.all()
         resource = Resource.objects.all()
@@ -419,8 +450,19 @@ class LocalAdd(View):
                 local.localization.add(localization.get(name=l))
             for r in form.cleaned_data["resource"]:
                 local.resource.add(resource.get(name=r))
-            return redirect('settlement', slug_country=slug_country, slug_region=slug_region, slug_fief=slug_fief, slug_settlement=slug_settlement)
+            return redirect('settlement',slug_book=slug_book, slug_country=slug_country, slug_region=slug_region, slug_fief=slug_fief, slug_settlement=slug_settlement)
         context = {
             'form': form
         }
         return render(request, 'generic_form.html', context)
+
+
+
+#############################selector###############################
+
+def CharacterType(request, slug_book):
+    book =  Books.objects.get(slug= slug_book)
+    if book.type == 'murim':
+        return redirect('character-list', slug_book=slug_book )
+    if book.type == 'fantasy':
+        return redirect('character')

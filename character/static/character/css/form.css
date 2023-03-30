@@ -5,17 +5,18 @@ body{
 
 .input-form{
     margin:  3rem auto;
-    width: 90%;
-    max-width: 40rem;
+    width: 60%;
+    max-width: 60rem;
     border-radius: 12px;
     padding: 12px;
     background-color: rgba(229, 229, 229, 0.41);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
 
-    
 }
-.input-form label{
-    font-size: 24px;
+
+
+.input-form label, .input-form div label {
+    font-size: 20px;
     font-weight: bold;
     text-transform: capitalize;
 

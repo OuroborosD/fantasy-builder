@@ -1,0 +1,76 @@
+/* Reset styles */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+/* Base styles */
+body {
+	font-family: 'Merriweather', serif;
+	background-color: #fff;
+	color: #333;
+}
+
+a {
+	color: #333;
+	text-decoration: none;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+/* Layout styles */
+.container {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 20px;
+}
+
+header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 40px;
+}
+
+nav ul {
+	display: flex;
+	list-style: none;
+}
+
+nav li {
+	margin-left: 30px;
+}
+
+main section:not(:last-child) {
+	margin-bottom: 60px;
+}
+
+/* About section styles */
+.image-wrapper {
+	max-width: 400px;
+	margin-bottom: 20px;
+}
+
+.info h2 {
+	margin-bottom: 20px;
+	font-size: 28px;
+}
+
+.info p {
+	line-height: 1.5;
+	font-size: 18px;
+}
+
+/* Abilities section styles */
+ul {
+	list-style: none;
+}
+
+li h3 {
+	font-size: 24px;
+	margin-bottom: 10px;
+}
+

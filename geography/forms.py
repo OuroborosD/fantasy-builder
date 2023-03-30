@@ -7,7 +7,7 @@ from helper.models import Economy, Localization, Resource, SettlementType
 class CountryForm(forms.ModelForm):
     class Meta:
         model = Country
-        exclude = ['slug']
+        exclude = ['slug','fk_book']
 
 
 class RegionForm(forms.Form):
@@ -49,7 +49,7 @@ class SettlementForm(forms.Form):
 
 
 class LocalForm(forms.Form):
-    name = forms.CharField(min_length=5)
+    name = forms.CharField(min_length=4)
     resource = forms.ModelMultipleChoiceField(
         required =False,
         queryset= Resource.objects.all())

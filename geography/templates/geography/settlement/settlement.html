@@ -9,10 +9,10 @@
 
 {% block nav %}
 <li class="nav-item active">                                       
-    <span class="sr-only"></span><a class="nav-link" href="{% url 'settlement-edit' slug_country  slug_region slug_fief slug_settlement %}">editar settlement</a></span>
+    <span class="sr-only"></span><a class="nav-link" href="{% url 'settlement-edit' slug_book slug_country  slug_region slug_fief slug_settlement %}">editar settlement</a></span>
 </li>
 <li class="nav-item active">
-    <span class="sr-only"></span><a class="nav-link" href="{% url 'local-add'  slug_country slug_region  slug_fief slug_settlement %}">adicionar Local</a></span>
+    <span class="sr-only"></span><a class="nav-link" href="{% url 'local-add' slug_book slug_country slug_region  slug_fief slug_settlement %}">adicionar Local</a></span>
 </li>
 {% endblock nav %}
 
@@ -37,7 +37,7 @@
             <ul>house: darnes</ul>
             <hr class="color">
             <ul>
-                fiefl:
+                fief:{{values.settlement.fk_fief.name}}
             </ul>
             <hr class="color">
             <ul>

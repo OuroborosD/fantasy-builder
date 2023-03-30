@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'character/css/form.css' %}">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock css %}
+
+
+
+{% block content %}
+<h1>New post</h1>
+
+    <form action="" method="POST"  class="input-form" enctype="multipart/form-data">
+     
+        {% csrf_token %}
+       
+
+
+         <div class="form-row">
+            <div class="col">
+                <label for="">força, limite 0/{{realm.limit_physic}}</label>
+                {{ form.STR.errors }}
+                {{ form.STR }}
+            </div>
+            <div class="col">
+                <label for="">dextreza, limite 0/{{realm.limit_physic}}</label>
+                {{ form.DEX.errors }}
+                {{ form.DEX }}
+            </div>
+            <div class="col">
+                <label for="">agilidade, limite 0/{{realm.limit_physic}}</label>
+                {{ form.AGI.errors }}
+                {{ form.AGI }}
+            </div>
+        </div>
+        <div class="my-5"></div>
+        <div class="form-row ">
+            <div class="col">
+                <label for="">resistencia, limite 0/{{realm.limit_physic}}</label>
+                {{ form.RES.errors }}
+                {{ form.RES }}
+            </div>
+            <div class="col">
+                <label for="">constituiçao, limite 0/{{realm.limit_physic}}</label>
+                {{ form.CON.errors }}
+                {{ form.CON }}
+            </div>
+        </div>
+        <div class="my-5"></div>
+        <div class="form-row">
+            <div class="col">
+                <label for="">controle, limite 0/{{realm.limit_spiritual}}</label>
+                {{ form.CTL.errors }}
+                {{ form.CTL }}
+            </div>
+            <div class="col">
+                <label for="">Percepção, limite 0/{{realm.limit_spiritual}}</label>
+                {{ form.PERCEPTION }}
+
+        
+            </div>
+        </div>
+        <div class="my-5"></div>
+        <label for="">pagina: </label>
+        {{form.page.errors}}
+        {{form.page}}
+        <div class="my-5"></div>
+        <button type="submit" value="Update">Create Character</button>
+    </form>
+
+
+
+{% endblock content %}

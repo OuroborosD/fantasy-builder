@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+<title>characters</title>
+{% endblock title %}
+
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'character/css/character_page.css' %}">
+{% endblock css %}
+
+{% block nav %}
+<li class="nav-item active">
+    <a class="nav-link" href="{% url 'books-add' %}">Adicionar livro <span
+            class="sr-only">(current)</span></a>
+</li>
+{% endblock nav %}
+
+
+{% block content %}
+
+<div class="flex-container margin-m">
+{% for book in books %}
+    <div class="card margin-p" style="width: 280px;">
+        <a href="{% url 'country-list'  book.slug %}">
+        <div class="card-image-holder">
+            <img class="card-img-top card-img" src="{% static 'default/kingdom/world/village.jpg' %}" alt="Card image cap"> 
+        </div>
+        </a>
+         <div class="card-body">
+             <h4 class="card-title">{{book.title}}</h4>
+             <h5 class="card-title">{{book.subtitle}}</h5>
+             <p class="card-text"> {{book.type}}   </p> 
+         </div>
+    </div>
+     {% endfor %}
+</div>
+
+{% endblock content %}

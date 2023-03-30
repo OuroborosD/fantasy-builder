@@ -13,8 +13,14 @@
 
 {% block nav %}
 <li class="nav-item active">
-    <a class="nav-link" href="{% url 'country-add' %}">criar novo país<span
-            class="sr-only">(current)</span></a>
+    <a class="nav-link" href="{% url 'country-add' slug_book %}">
+        criar novo país
+    </a>
+</li>
+<li class="nav-item active">
+    <a class="nav-link" href="{% url 'character-goto' slug_book %}">
+        Characters
+    </a>
 </li>
 
 {% endblock nav %}
@@ -28,7 +34,7 @@
     {% for value in countries %}
     <div class="card-body">
         <div class="holder">
-            <a href="{% url 'country'  value.slug%}">
+            <a href="{% url 'country' slug_book value.slug%}">
             <img src="{% static 'default/kingdom/world/local.jpg' %}" alt=""></div>
         </a>
             <div>                       
