@@ -41,9 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'helper',
+    'character',
     'geography.apps.GeographyConfig',
     'geopolitic.apps.GeopoliticConfig',
-    'character',
     'murim',
                     
 ]
