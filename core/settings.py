@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+from core.assets import ALLOWED_HOSTS, DATABASES
 
 from core.key import SECRET_KEY
 
@@ -27,7 +28,7 @@ SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS
 
 
 # Application definition
@@ -88,17 +89,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 #     }
 # }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dev2',
-        'USER': 'postgres',
-        'PASSWORD': '3540',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
-}
-
+DATABASES
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
