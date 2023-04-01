@@ -17,10 +17,12 @@
 {% endblock %}
 
 
-
+{%block onload%}
+  onload="sumAtributes()"
+{% endblock %}
 
 {% block content%}
-<div class="container mt-4">
+<div class="container mt-4" >
   <div class="row">
     <div class="col-lg-4">
       <div class="card mb-4">
@@ -52,7 +54,7 @@
 
 <div class="container">
   <div class="card mb-4">
-    <div class="card-body">
+    <div class="card-body"  data-toggle="tooltip" data-placement="bottom" title="{{first_proficience.fk_proficience.description}}">
       <h1 class="card-title">Proficience</h1>
       <p><span class="small">
           <a href="{% url 'proficience-add'  slug_book character.slug %}" class="a-link">
@@ -65,7 +67,9 @@
             <div class="col-md-4 mb-4">
               <div class="card">
                 <div class="card-body">
-                  <h2 class="card-title">{{proficience.weapon_id.weapon}} {{proficience.fk_proficience.rank}}</h2>
+                  <h2 class="card-title"><a href="{% url 'proficience-edit'  slug_book character.slug proficience.pk%}">
+                    {{proficience.weapon_id.weapon}} {{proficience.fk_proficience.rank}}
+                  </a></h2>
                   <p class="card-text">level: {{proficience.level}}</p>
                 </div>
               </div>
@@ -77,88 +81,88 @@
   </div>
 
 
-<div class="container">
-  <div class="card mb-4">
-    <div class="card-body">
-      <h1 class="card-title">Attributes</h1>
-      <p><span class="small">
-        {% if realm %}
-          <a href="
-          {% url 'atribute-add'  slug_book character.slug  realm.fk_realm.pk %}
-          " class="a-link">
-          atualizado na pagina {{atribute.page}}
-          {% endif%}
-        </a>
-        </span></p>
-        <div class="row">
-          <div class="col-md-4 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Str</h5>
-                <p class="card-text">{{atribute.STR}}</p>
+  <div class="container">
+    <div class="card mb-4">
+      <div class="card-body">
+        <h1 class="card-title">Attributes</h1>
+        <p><span class="small">
+          {% if realm %}
+            <a href="
+            {% url 'atribute-add'  slug_book character.slug  realm.fk_realm.pk atribute.pk %}
+            " class="a-link">
+            atualizado na pagina {{atribute.page}}
+            {% endif%}
+          </a>
+          </span></p>
+          <div class="row">
+            <div class="col-md-4 mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Str</h5>
+                  <p class="card-text">Total:<span class="sum"></span> (Base:<span class="num1">{{realm.fk_realm.bonus_physic}} </span>+ Atributo:<span class="num2">{{atribute.STR}}</span>)</p>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-4 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Dex</h5>
-                <p class="card-text">{{atribute.DEX}}</p>
+            <div class="col-md-4 mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Dex</h5>
+                  <p class="card-text">Total:<span class="sum"></span> (Base:<span class="num1">{{realm.fk_realm.bonus_physic}} </span>+ Atributo:<span class="num2">{{atribute.DEX}}</span>)</p>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-4 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Agi</h5>
-                <p class="card-text">{{atribute.AGI}}</p>
+            <div class="col-md-4 mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Agi</h5>
+                  <p class="card-text">Total:<span class="sum"></span> (Base:<span class="num1">{{realm.fk_realm.bonus_physic}} </span>+ Atributo:<span class="num2">{{atribute.AGI}}</span>)</p>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-4 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Constituição</h5>
-                <p class="card-text">{{atribute.CON}}</p>
+            <div class="col-md-4 mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Constituição</h5>
+                  <p class="card-text">Total:<span class="sum"></span> (Base:<span class="num1">{{realm.fk_realm.bonus_physic}} </span>+ Atributo:<span class="num2">{{atribute.CON}}</span>)</p>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-4 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Res</h5>
-                <p class="card-text">{{atribute.RES}}</p>
+            <div class="col-md-4 mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Res</h5>
+                  <p class="card-text">Total:<span class="sum"></span> (Base:<span class="num1">{{realm.fk_realm.bonus_physic}} </span>+ Atributo:<span class="num2">{{atribute.RES}}</span>)</p>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-4 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Percepção</h5>
-                <p class="card-text">{{atribute.PERCEPTION}}</p>
+            <div class="col-md-4 mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Percepção</h5>
+                  <p class="card-text">Total:<span class="sum"></span> (Base:<span class="num1">{{realm.fk_realm.bonus_spiritual}} </span>+ Atributo:<span class="num2">{{atribute.PERCEPTION}}</span>)</p>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-4 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Control</h5>
-                <p class="card-text">{{atribute.CTL}}</p>
+            <div class="col-md-4 mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Control</h5>
+                  <p class="card-text">Total:<span class="sum"></span> (Base:<span class="num1">{{realm.fk_realm.bonus_spiritual}} </span>+ Atributo:<span class="num2">{{atribute.CTL}}</span>)</p>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-4 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Ky</h5>
-                <p class="card-text">{{atribute.KY}}</p>
+            <div class="col-md-4 mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Ky</h5>
+                  <p class="card-text">{{atribute.KY}}</p>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
 <div class="container">
   <div class="card mb-4">
@@ -181,7 +185,7 @@
         <tbody>
           {% for skill in skills %}
           <tr>
-              <td><a href="">
+              <td><a href="{% url 'skill-edit' slug_book character.slug skill.pk %}">
                 {{skill.fk_skill.name}}
               </a>
             </td>

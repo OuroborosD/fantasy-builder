@@ -9,7 +9,7 @@ from character.froms import CharacterForm
 from character.models import Characters, GoldEntries, Inventory, TotalGold
 from helper.models import Books, ItemType, Periode
 from murim.forms import AtributosForm, CharacterProficienceForm, CharacterRealmForm, CharacterSkillForm, GoldForm, InventaryForm, SkillForm
-from murim.models import Atribute, CharacterProficience, CharacterRealm, CharacterSkills, Realms, Skills
+from murim.models import Atribute, CharacterProficience, CharacterRealm, CharacterSkills, Realms, SkillRank, Skills
 
 
 class CharacterList(ListView):
@@ -90,6 +90,10 @@ def character(request, slug_book, slug_character):
         'skills':skill,
         'first_skill': first_skill,
         'realm':realm,
+        # 'realm_limit':{
+        #             'physic':sum([realm.fk_realm.bonus_physic, st]),
+        #             'spiritual':sum([realm.fk_realm.bonus_spiritual, realm.fk_realm.bonus_spiritual]),
+        #             },
         'proficiences':proficience,
         'first_proficience':first_proficience,
         'gold':gold,
@@ -140,8 +144,9 @@ class characterEdit(View):
 ##################################         ######################################
 
 class AtributeAd(View):
-    def get(self, request, slug_book, slug_character, pk_realm):
-        form = AtributosForm()
+    def get(self, request, slug_book, slug_character, pk_realm, pk):
+        atribute = Atribute.objects.get(pk=pk)
+        form = AtributosForm(instance= atribute)
         realm = Realms.objects.get(pk = self.kwargs['pk_realm'])
         print(f'	linha 143-------arquivo: {realm}  ------- valor:	')
         context = {
@@ -150,7 +155,7 @@ class AtributeAd(View):
         }
         return render(request, 'murim/atributes/add.html', context)
 
-    def post(self, request, slug_book, slug_character, pk_realm):
+    def post(self, request, slug_book, slug_character, pk_realm,pk):
         character = Characters.objects.get(slug=slug_character)
         realm = Realms.objects.get(pk = self.kwargs['pk_realm'])
         form = AtributosForm(request.POST)
@@ -236,6 +241,50 @@ class Skill(CreateView):
                 'slug_character':self.kwargs['slug_character']})
 
 
+
+class Skill2(View):
+    def get(self, request, slug_book, slug_character):
+        form = SkillForm()
+        context = {
+            'form': form,
+        }
+        return render(request, 'murim/skill/add_skill.html', context)
+
+    def post(self, request, slug_book, slug_character):
+        skillrank = SkillRank.objects.all
+        form = SkillForm(request.POST)
+        if form.is_valid():
+            form.save()
+            # BOOK
+            # para salvar many-to-many feild, que no caso é outra tabela
+            # crie o objeto sabe ele, e depois adicione o atributo com o metodo .add()
+            
+            # fief.name=form.cleaned_data['name']
+            # fief.size=form.cleaned_data['size']
+            # fief.description=form.cleaned_data['description']
+            # fief.save()
+
+            # for l in form.cleaned_data["atributes"]:
+            #     fief.localization.add(localization.get(name=l))
+            return redirect('skill-add',slug_book=slug_book, slug_character=slug_character)
+        rank_skill = form["rank"].value()
+      
+        print(f'	linha 271-------arquivo: {rank_skill}------- valor:')
+        
+        try:
+            rank = SkillRank.objects.get(pk=rank_skill)
+            bonus= rank.multiplier
+            time = rank.time
+        except:
+            rank = 0
+        context = {
+            'form': SkillForm(request.POST,bonus = {'bonus_5' : bonus, 'time':time}),
+            'rank':rank,
+        }
+        return render(request, 'murim/skill/add_skill.html', context)
+
+
+
 class CharacterSkillAdd(CreateView):
     model = CharacterSkills
     context_object_name = 'form'
@@ -264,6 +313,43 @@ class CharacterSkillAdd(CreateView):
 
         return HttpResponseRedirect(self.get_success_url())
 
+class EditSkill(View):
+    
+    def get(self,request, slug_book, slug_character, pk):
+        skill = CharacterSkills.objects.get(pk=pk)
+        form = CharacterSkillForm(instance=skill)
+        context = {
+        'form':form,
+        'slug_book':slug_book,
+        'slug_character':slug_character,
+        'pk':pk,
+        }
+        return render(request, 'murim/skill/edit.html',context)
+
+    def post(self,request,slug_book, slug_character, pk):
+        skill = CharacterSkills.objects.get(pk=pk)
+        form = CharacterSkillForm(request.POST)
+        if form.is_valid():
+            skill.fk_skill =form.cleaned_data['fk_skill']
+            skill.mastery = form.cleaned_data['mastery']
+            skill.page = form.cleaned_data['page']
+            skill.save()
+            # print(form.instance)#instance serve para pegar o valor do model no caso CHARACTERS
+            # print(form.instance.slug)
+            return redirect('character-murim', slug_book=slug_book, slug_character=slug_character)
+
+        context = {
+        'form':form,
+        'slug_book':slug_book,
+        'slug_character':slug_character,
+        'pk':pk,
+        }
+        return render(request, 'murim/skill/edit.html',context)
+
+def deleteSkill(request, slug_book,slug_character,pk):
+    item = CharacterSkills.objects.get(pk = pk)
+    item.delete()
+    return redirect('character-murim', slug_book= slug_book, slug_character=slug_character)
 
 ##################################   REALM      ######################################
 
@@ -314,6 +400,45 @@ class ProficienceAdd(CreateView):
     
 
 
+class EditProficience(View):
+    
+    def get(self,request, slug_book, slug_character, pk):
+        proficience = CharacterProficience.objects.get(pk=pk)
+        form = CharacterProficienceForm(instance=proficience)
+        context = {
+        'form':form,
+        'slug_book':slug_book,
+        'slug_character':slug_character,
+        'pk':pk,
+        }
+        return render(request, 'murim/proficience/edit.html',context)
+
+    def post(self,request,slug_book, slug_character, pk):
+        proficience = CharacterProficience.objects.get(pk=pk)
+        form = CharacterProficienceForm(request.POST)
+        if form.is_valid():
+            proficience.fk_proficience =form.cleaned_data['fk_proficience']
+            proficience.weapon_id = form.cleaned_data['weapon_id']
+            proficience.level = form.cleaned_data['level']
+            proficience.page = form.cleaned_data['page']
+            proficience.save()
+            # print(form.instance)#instance serve para pegar o valor do model no caso CHARACTERS
+            # print(form.instance.slug)
+            return redirect('character-murim', slug_book=slug_book, slug_character=slug_character)
+
+        context = {
+        'form':form,
+        'slug_book':slug_book,
+        'slug_character':slug_character,
+        'pk':pk,
+        }
+        return render(request, 'murim/proficience/edit.html',context)
+
+def deleteProficience(request, slug_book,slug_character,pk):
+    item = CharacterProficience.objects.get(pk = pk)
+    item.delete()
+    return redirect('character-murim', slug_book= slug_book, slug_character=slug_character)
+
 
 # ############################ INVENTORY ###################################33
 
@@ -343,6 +468,9 @@ class AddItem(View):
         'form':form
         }
         return render(request, 'generic_form.html',context)
+    
+
+
 
 
 class EditItem(View):
@@ -351,16 +479,18 @@ class EditItem(View):
         item = Inventory.objects.get(pk=pk)
         form = InventaryForm(instance=item)
         context = {
-        'form':form
+        'form':form,
+        'slug_book':slug_book,
+        'slug_character':slug_character,
+        'pk':pk,
         }
-        return render(request, 'generic_form.html',context)
+        return render(request, 'murim/item/edit.html',context)
 
     def post(self,request,slug_book, slug_character, pk):
         character = Characters.objects.get(slug=slug_character)
         item = Inventory.objects.get(pk = pk)
         form = InventaryForm(request.POST)
         if form.is_valid():
-            print(f'	linha 363-------arquivo: {form.cleaned_data["name"]}------- valor:')
             item.fk_item_type =form.cleaned_data['fk_item_type']
             item.name = form.cleaned_data['name']
             item.description = form.cleaned_data['description']
@@ -371,11 +501,18 @@ class EditItem(View):
             return redirect('character-murim', slug_book=slug_book, slug_character=character.slug)
 
         context = {
-        'form':form
+        'form':form,
+        'slug_book':slug_book,
+        'slug_character':slug_character,
+        'pk':pk,
         }
-        return render(request, 'generic_form.html',context)
+        return render(request, 'murim/item/edit.html',context)
 
 
+def deleteItem(request, slug_book,slug_character,pk):
+    item = Inventory.objects.get(pk = pk)
+    item.delete()
+    return redirect('character-murim', slug_book= slug_book, slug_character=slug_character)
 
 class AddCoin(View):
     

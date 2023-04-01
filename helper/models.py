@@ -20,7 +20,7 @@ class SkillMastery(models.Model):
     description = models.TextField()
 
     def __str__(self):
-        return f'{self.pk} | {self.rank} '
+        return f'{self.rank} '
     
 
 class ItemType(models.Model):

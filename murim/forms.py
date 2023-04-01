@@ -1,5 +1,6 @@
 from django import forms
 from character.models import Inventory
+from helper.models import SkillMastery
 
 from murim.models import Atribute, CharacterProficience, CharacterRealm, CharacterSkills, Skills
 from utils.medidas import Monetary
@@ -19,12 +20,69 @@ class SkillForm(forms.ModelForm):
         labels = {
             'bonus_1':'bonus que ganha no estagio aprendiz',
             'bonus_2':'bonus que ganha no estagio usuario',
+            'bonus_3':'bonus que ganha no estagio pequena enligamento ',
+            'bonus_4':'bonus que ganha no estagio grande enligamento',
+            'bonus_5':'bonus que ganha no estagio de mestre',
+            'time':'tem maximo que a skills é ativa, em segundos: ',
+
         }
+        #BOOK adicionado atributos a tag html
+        #isso vai adcionar o onchaced=""> na tag html do select
+        widgets = {
+            'rank': forms.Select(attrs={'onchange': 'this.form.submit()'}),
+
+        }
+    def __init__(self, *args, **kwargs):
+        change = kwargs.pop('bonus', {})
+        super(SkillForm, self).__init__(*args, **kwargs)
+        for field_name, label in change.items():
+            if label:
+                #ATENTION precisa transformar para string, pois caso for numero da erro
+                self.fields[field_name].label += f' {str(label)}'
+
+
+
+
 
 class CharacterSkillForm(forms.ModelForm):
     class Meta:
         model = CharacterSkills
         exclude = ['fk_character']
+        widgets = {
+            'mastery': forms.Select(),
+        }
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #      #BOOK adicionado tooptip ao select
+    #     #self.fields['mastery'].widget.Select = self.get_choices_with_tooltips()
+    #     self.fields['mastery'].widget.attrs.update(self.get_widget_attrs())
+    #     print(f'	linha 59-------arquivo: ------- valor:	')
+    #     print(self.fields['mastery'].widget.attrs)
+    #     print(f'	linha 59-------arquivo: ------- valor:	')
+    # # #BOOK adicionado tooptip ao choice
+    # # #ormierio pego o capo no innit
+    # # def get_choices_with_tooltips(self):
+    # #     choices = []
+    # #     for obj in SkillMastery.objects.all():
+    # #         value = obj.pk
+    # #         label = str(obj)
+    # #         tooltip = obj.description
+    # #         attrs = {"data-toggle":"tooltip" ,'title': tooltip}
+    # #         choices.append((value, label, attrs))
+    # #         print(f'	linha 68-------arquivo: {choices}------- valor:	')
+    # #     print(f'	linha 69-------arquivo: {choices}------- valor:	')
+    # #     return choices
+    
+    
+    # #BOOK adicionado tooptip ao select
+    # #ormierio pego o capo no innit
+    # def get_widget_attrs(self):
+    #     attrs = {}
+    #     for obj in SkillMastery.objects.all():
+    #         tooltip = obj.description
+    #         attrs[obj.pk] = { "data-toggle":"tooltip" ,"data-placement":"right", "title":"Tooltip on right"}
+    #     return attrs
+
 
 class CharacterRealmForm(forms.ModelForm):
     class Meta:

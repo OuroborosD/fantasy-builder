@@ -6,22 +6,39 @@ from character.models import Characters
 from helper.models import SkillMastery, WeaponsType
 from utils.rank import Rank
 
+class AtributesDescription(models.Model):
+    name =  models.CharField(max_length=15)
+    description = models.TextField()
+
+    def __str__(self):
+        return f'{self.name} '
+
+class SkillRank(models.Model):
+    name = models.CharField(max_length=20)
+    color = models.CharField(max_length=30, null= True  , blank=True)
+    multiplier = models.PositiveSmallIntegerField(null= True , blank=True)
+    max_atributes = models.PositiveSmallIntegerField(null= True , blank=True)
+    time = models.PositiveSmallIntegerField(null= True , blank=True)
+    ky = models.PositiveSmallIntegerField(null= True , blank=True)
+
+    def __str__(self):
+        return f'{self.name} '
 
 # Create your models here.
 class Skills(models.Model):
     type_skill = models.CharField(max_length=20, choices=Rank().skill_type)
     weapon_type = models.ForeignKey(WeaponsType, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=50)
-    rank = models.CharField(max_length=20, choices=Rank().skill_rank)
+    rank = models.ForeignKey(SkillRank, on_delete=models.SET_NULL, null=True)
     sub_rank = models.CharField(max_length=6, choices=Rank().skill_sub_rank)
     description = models.TextField()
-    bonus_status = models.CharField(max_length=20)
-    time = models.SmallIntegerField()
-    bonus_1 = models.SmallIntegerField()
-    bonus_2 = models.SmallIntegerField()
-    bonus_3 = models.SmallIntegerField()
-    bonus_4 = models.SmallIntegerField()
-    bonus_5 = models.SmallIntegerField()
+    atributes = models.ManyToManyField(AtributesDescription)
+    time = models.SmallIntegerField(null= True)
+    bonus_1 = models.SmallIntegerField(null= True)
+    bonus_2 = models.SmallIntegerField(null= True)
+    bonus_3 = models.SmallIntegerField(null= True)
+    bonus_4 = models.SmallIntegerField(null= True)
+    bonus_5 = models.SmallIntegerField(null= True)
 
     def __str__(self):
         return f'{self.name} | {self.rank}'

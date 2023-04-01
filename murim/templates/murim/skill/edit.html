@@ -8,7 +8,13 @@
 <link rel="stylesheet" href="{% static 'character/css/form.css' %}">
 {% endblock css %}
 
-
+{% block nav %}
+<li class="nav-item active">
+    <a class="nav-link" href="{% url 'skill-delete' slug_book slug_character pk  %}">
+        deletar item
+    </a>
+</li>
+{% endblock %}
 
 
 {% block content %}
