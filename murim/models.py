@@ -18,7 +18,7 @@ class SkillRank(models.Model):
     color = models.CharField(max_length=30, null= True  , blank=True)
     multiplier = models.PositiveSmallIntegerField(null= True , blank=True)
     max_atributes = models.PositiveSmallIntegerField(null= True , blank=True)
-    time = models.PositiveSmallIntegerField(null= True , blank=True)
+    duration = models.PositiveSmallIntegerField(null= True , blank=True)
     ky = models.PositiveSmallIntegerField(null= True , blank=True)
 
     def __str__(self):
@@ -33,7 +33,7 @@ class Skills(models.Model):
     sub_rank = models.CharField(max_length=6, choices=Rank().skill_sub_rank)
     description = models.TextField()
     atributes = models.ManyToManyField(AtributesDescription)
-    time = models.SmallIntegerField(null= True, blank=True)
+    duration = models.SmallIntegerField(null= True, blank=True)
     bonus_1 = models.SmallIntegerField(null= True, blank=True)
     bonus_2 = models.SmallIntegerField(null= True, blank=True)
     bonus_3 = models.SmallIntegerField(null= True ,blank=True)

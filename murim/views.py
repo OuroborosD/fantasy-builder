@@ -278,7 +278,7 @@ class Skill2(View):
         except:
             rank = 0
         context = {
-            'form': SkillForm(request.POST,bonus = {'bonus_5' : bonus, 'time':time}),
+            'form': SkillForm(request.POST,bonus = {'bonus_5' : bonus, 'duration':time}),
             'rank':rank,
         }
         return render(request, 'murim/skill/add_skill.html', context)
