@@ -33,12 +33,12 @@ class Skills(models.Model):
     sub_rank = models.CharField(max_length=6, choices=Rank().skill_sub_rank)
     description = models.TextField()
     atributes = models.ManyToManyField(AtributesDescription)
-    time = models.SmallIntegerField(null= True)
-    bonus_1 = models.SmallIntegerField(null= True)
-    bonus_2 = models.SmallIntegerField(null= True)
-    bonus_3 = models.SmallIntegerField(null= True)
-    bonus_4 = models.SmallIntegerField(null= True)
-    bonus_5 = models.SmallIntegerField(null= True)
+    time = models.SmallIntegerField(null= True, blank=True)
+    bonus_1 = models.SmallIntegerField(null= True, blank=True)
+    bonus_2 = models.SmallIntegerField(null= True, blank=True)
+    bonus_3 = models.SmallIntegerField(null= True ,blank=True)
+    bonus_4 = models.SmallIntegerField(null= True, blank=True)
+    bonus_5 = models.SmallIntegerField(null= True, blank=True)
 
     def __str__(self):
         return f'{self.name} | {self.rank}'

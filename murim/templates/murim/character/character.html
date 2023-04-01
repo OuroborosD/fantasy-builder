@@ -208,10 +208,59 @@
 
 
 
+
 <div class="container">
   <div class="card mb-4">
     <div class="card-body">
-      <h2 class="card-title"><a href="{% url 'item-add' slug_book character.slug %}">Inventary</a></h2>
+      <h1 class="card-title">Skills2</h1>
+      <p><span class="small">
+        <a href="{% url 'skill-add'  slug_book character.slug %}" class="a-link">
+        last time updated, page {{first_skill.page}}.
+      </a>
+      </span></p>
+        <div class="row">
+          {% for skill in skills %}
+          <div class="col-md-4">
+            <div class="card " style="max-width: 300px; min-width: 250px">
+              <div style="width: 128px; margin: 8px auto;">
+                <img class="my-3" src="{% static 'default/icons/character/skill.png' %}" class="card-img-top" style="width: 128px; ">
+              </div>
+              <div class="card-body">
+                <h4 class="card-title "><a class="" href="{% url 'skill-edit' slug_book character.slug skill.pk %}">
+                  {{skill.fk_skill.name}}
+                </a></h4>
+
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item bg-light">{{skill.fk_skill.rank}} {{skill.fk_skill.sub_rank}}</li>
+                  <li class="list-group-item" data-toggle="tooltip" data-placement="bottom" title="{{skill.mastery.description}}">mastery {{skill.mastery.rank}}</li>
+                  <li class="list-group-item bg-light">{% for atributes in skill.fk_skill.atributes.all %} <span style="font-style: italic; font-weight: bolder;">
+                    {{atributes}} 
+                  </span>
+                    {% if atributes == skill.fk_skill.atributes.last %}
+                            .
+                        {% else %}
+                            ,
+                        {% endif %}
+                    
+                    {% endfor %}</li>
+                  <li class="list-group-item">page:{{skill.page}}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+            {% endfor %}
+        
+        </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="container">
+  <div class="card mb-4">
+    <div class="card-body">
+      <h2 class="card-title"><a href="{% url 'item-add' slug_book character.slug %}" style="text-decoration: none; color: black;">Inventary</a></h2>
       <p class="card-text"><a href="{% url 'coin-add' slug_book character.slug %}">possui {{gold.value}} moedas de ouro</a></p>
       <table class="table">
         <thead>
