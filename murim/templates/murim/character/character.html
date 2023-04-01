@@ -164,47 +164,7 @@
       </div>
     </div>
 
-<div class="container">
-  <div class="card mb-4">
-    <div class="card-body">
-      <h2 class="card-title">Skills</h2>
-      <p><span class="small">
-        <a href="{% url 'skill-add'  slug_book character.slug %}" class="a-link">
-        last time updated, page {{first_skill.page}}.
-      </a>
-      </span></p>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>name</th>
-            <th>rank</th>
-            <th>mastery</th>
-            <th>page</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for skill in skills %}
-          <tr>
-              <td><a href="{% url 'skill-edit' slug_book character.slug skill.pk %}">
-                {{skill.fk_skill.name}}
-              </a>
-            </td>
-            <td>
-                {{skill.fk_skill.rank}} {{skill.fk_skill.sub_rank}}
-              </td>
-              <td data-toggle="tooltip" data-placement="bottom" title="{{skill.mastery.description}}">{{skill.mastery.rank}}</td>
-              <td>{{skill.page}}</td>
-        
-          </tr>
-        
-          {% endfor %}
-        
 
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
 
 
 
@@ -212,7 +172,7 @@
 <div class="container">
   <div class="card mb-4">
     <div class="card-body">
-      <h1 class="card-title">Skills2</h1>
+      <h1 class="card-title">Skills</h1>
       <p><span class="small">
         <a href="{% url 'skill-add'  slug_book character.slug %}" class="a-link">
         last time updated, page {{first_skill.page}}.
