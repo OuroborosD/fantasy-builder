@@ -191,8 +191,8 @@
                 </a></h4>
 
                 <ul class="list-group list-group-flush">
-                  <li class="list-group-item bg-light">{{skill.fk_skill.rank}} {{skill.fk_skill.sub_rank}}</li>
-                  <li class="list-group-item" data-toggle="tooltip" data-placement="bottom" title="{{skill.mastery.description}}">mastery {{skill.mastery.rank}}</li>
+                  <li class="list-group-item bg-light"><span style="font-weight: bolder; text-transform: capitalize;">{{skill.fk_skill.rank}}</span> <span style="font-style: italic; ">{{skill.fk_skill.sub_rank}}</span></li>
+                  <li class="list-group-item" data-toggle="tooltip" data-placement="bottom" title="{{skill.mastery.description}}"> <span style="font-weight:500; text-transform: capitalize;"> {{skill.mastery.rank}}</span></li>
                   <li class="list-group-item bg-light">{% for atributes in skill.fk_skill.atributes.all %} <span style="font-style: italic; font-weight: bolder;">
                     {{atributes}} 
                   </span>
@@ -203,7 +203,7 @@
                         {% endif %}
                     
                     {% endfor %}</li>
-                  <li class="list-group-item">page:{{skill.page}}</li>
+                  <li class="list-group-item">page: {{skill.page}}</li>
                 </ul>
               </div>
             </div>

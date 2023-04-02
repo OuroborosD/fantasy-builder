@@ -163,7 +163,7 @@ class AtributeAd(View):
         if form.is_valid():
             print(f'	linha 155-------arquivo: entrou no valido-------')
             aux = form.save(commit=False)
-            aux.KY = (form.cleaned_data['CTL']*10)
+            #aux.KY = (form.cleaned_data['CTL']*10)
             aux.fk_character = character
             aux.save()
             return redirect('character-murim', slug_book= slug_book, slug_character = character.slug)

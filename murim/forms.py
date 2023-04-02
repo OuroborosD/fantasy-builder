@@ -11,7 +11,8 @@ from utils.medidas import Monetary
 class AtributosForm(forms.ModelForm):
     class Meta:
         model = Atribute
-        exclude = ['fk_character', 'KY']
+        exclude = ['fk_character']
+
 
 class SkillForm(forms.ModelForm):
     class Meta:
