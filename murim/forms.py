@@ -38,7 +38,11 @@ class SkillForm(forms.ModelForm):
         for field_name, label in change.items():
             if label:
                 #ATENTION precisa transformar para string, pois caso for numero da erro
-                self.fields[field_name].label += f' {str(label)}'
+                if self.fields[field_name] == self.fields['duration']:
+                    self.fields[field_name].label += f' max {str(label)} (S)'
+                else:
+                    self.fields[field_name].label += f' {str(label)}'
+
 
 
 

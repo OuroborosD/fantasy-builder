@@ -267,6 +267,7 @@ class Skill2(View):
             # for l in form.cleaned_data["atributes"]:
             #     fief.localization.add(localization.get(name=l))
             return redirect('skill-add',slug_book=slug_book, slug_character=slug_character)
+       ##BOOK pega o valor que recebeu do form
         rank_skill = form["rank"].value()
       
         print(f'	linha 271-------arquivo: {rank_skill}------- valor:')
@@ -274,7 +275,7 @@ class Skill2(View):
         try:
             rank = SkillRank.objects.get(pk=rank_skill)
             bonus= rank.multiplier
-            time = rank.time
+            time = rank.duration
         except:
             rank = 0
         context = {
