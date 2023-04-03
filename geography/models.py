@@ -12,6 +12,7 @@ class Country(models.Model):
     fk_book = models.ForeignKey(Books, on_delete=models.SET_NULL, null= True)
     name = models.CharField(max_length=50)
     rank = models.ForeignKey(CountryType, on_delete=models.SET_NULL, null=True)
+    description = models.TextField(default='N/A')
     slug = models.SlugField(unique=True, default='', blank=True, null=True, db_index=True)
 
     def save(self, *args, **kwargs):  # sobrescreve o save metod

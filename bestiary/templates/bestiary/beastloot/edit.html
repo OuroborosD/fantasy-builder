@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'character/css/form.css' %}">
+{% endblock css %}
+{% block nav %}
+<li class="nav-item active">
+  <a class="nav-link" href="{% url 'beastloot-delete' slug_book  slug_beast loot %}">
+      deletar esse loot
+  </a>
+</li>
+{% endblock %}
+
+
+{% block content %}
+<h1>New post</h1>
+{{loot}}
+
+    <form action="" method="POST"  class="input-form" enctype="multipart/form-data">
+
+        {% csrf_token %}
+        {{ form}}
+
+
+        <button type="submit" value="Update">Create Character</button>
+    </form>
+
+
+
+{% endblock content %}

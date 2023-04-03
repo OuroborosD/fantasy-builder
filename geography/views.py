@@ -60,7 +60,7 @@ class CountriesAdd(CreateView):
 class CountryUpdate(UpdateView):
     model = Country
     template_name = 'generic_form.html'
-    fields = ['name', 'rank']
+    fields = ['name', 'rank', 'description']
     slug_field = 'slug'
     slug_url_kwarg = 'slug_country'
 

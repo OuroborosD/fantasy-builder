@@ -44,7 +44,9 @@ INSTALLED_APPS = [
     'character',
     'geography.apps.GeographyConfig',
     'geopolitic.apps.GeopoliticConfig',
+    'bestiary',
     'murim',
+    'almanac',
                     
 ]
 

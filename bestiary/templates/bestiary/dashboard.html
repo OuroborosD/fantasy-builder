@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+<title>characters</title>
+{% endblock title %}
+
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock css %}
+
+{% block nav %}
+<li class="nav-item active">
+    <a class="nav-link" href="{% url 'country-list' slug_book %}">
+        ir para world
+    </a>
+</li>
+<li class="nav-item active">
+    <a class="nav-link" href="{% url 'character-goto' slug_book %}">
+        Characters
+    </a>
+</li>
+<li class="nav-item active">
+    <a class="nav-link" href="{% url 'beastiary-add' slug_book %}">
+        Bestiary
+    </a>
+</li>
+
+{% endblock nav %}
+
+
+{% block content %}
+
+
+<section class="flex">
+ 
+    {% for value in beasties %}
+    <div class="card-body">
+        <div class="holder">
+            <a href="{% url 'beastiary' slug_book value.slug %}">
+            <img src="{{value.img.url}}" alt=""></div>
+        </a>
+            <div>                       
+            <h2>
+                {{value.name}}
+            </h2>
+            <p>rank: {{value.murim_realm.rank}}
+            </p>
+            <p>atributes: 0/{{value.murim_realm.limit_physic}}
+            </p>
+    
+        </div>
+   
+    </div>
+    {% endfor %}
+</section>
+
+    
+{% endblock content %}

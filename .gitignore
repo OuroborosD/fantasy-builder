@@ -1,7 +1,10 @@
 venv/
 **/migrations/**
 !**/migrations/__init__.py
-uploads/
+uploads/*
+!uploads/images/
+uploads/images/*
+!uploads/images/default/
 
 *.sqlite3
 *.log

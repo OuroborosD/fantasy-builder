@@ -106,7 +106,7 @@ weapon_list = (
 
 class Characters(models.Model):
     fk_book = models.ForeignKey(Books, on_delete=models.SET_NULL, null=True)
-    img = models.ImageField(upload_to='images/character/', default='images/character/default.png')
+    img = models.ImageField(upload_to='images/character/%Y/%m/%d/', default='images/default/character.png')
     name = models.CharField(max_length=50)
     alias = models.CharField(max_length=50, default='N/A')
     alive = models.CharField(max_length=20, choices=(('alive','alive'),('death','death')))

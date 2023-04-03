@@ -1,0 +1,240 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block nav %}
+<li class="nav-item active">
+  <a class="nav-link" href="{% url 'beastiary-list' slug_book %}">
+      ir para lista de beast
+  </a>
+</li>
+<li class="nav-item active">
+  <a class="nav-link" href="{% url 'beastiary-edit' slug_book beast.beast.slug %}">
+      Editar Beast
+  </a>
+</li>
+<li class="nav-item active">
+  <a class="nav-link" href="{% url 'beastloot-add' slug_book beast.beast.slug %}">
+      adicionar loot
+  </a>
+</li>
+
+{% endblock %}
+
+
+{%block onload%}
+  onload="sumAtributes()"
+{% endblock %}
+
+{% block content%}
+
+
+<div class="container mt-4" >
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="card mb-4">
+        <img class="card-img-top" src="{{ beast.beast.img.url }}" alt="Character Image">
+        <div class="card-body">
+          <h2 class="card-title">{{beast.beast.name}}</h2>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">Race: ? </li>
+          <li class="list-group-item">Realm: {{beast.beast.murim_realm.rank}}</li>
+          <li class="list-group-item">physic:0/{{beast.beast.murim_realm.limit_physic}} | espiritual: 0/{{beast.beast.murim_realm.limit_spiritual}}</li>
+          
+        </ul>
+
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <h4 class="mb-4">Description</h4>
+      <p>
+        {{beast.beast.description}}
+      </p>
+
+    </div>
+
+
+  </div>
+</div>
+</div>
+
+
+
+  <div class="container">
+    <div class="card mb-4">
+      <div class="card-body">
+        <h1 class="card-title">Attributes</h1>
+        <p><span class="small">
+          {% if realm %}
+            <a href="
+            {% url 'atribute-add'  slug_book beast.slug  realm.fk_realm.pk atribute.pk %}
+            " class="a-link">
+            atualizado na pagina {{atribute.page}}
+            {% endif%}
+          </a>
+          </span></p>
+          <div class="row">
+            <div class="col-md-4 mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Str</h5>
+                  <p class="card-text">Total:<span class="sum"></span> (Base:<span class="num1">{{realm.fk_realm.bonus_physic}} </span>+ Atributo:<span class="num2">{{atribute.STR}}</span>)</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Dex</h5>
+                  <p class="card-text">Total:<span class="sum"></span> (Base:<span class="num1">{{realm.fk_realm.bonus_physic}} </span>+ Atributo:<span class="num2">{{atribute.DEX}}</span>)</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Agi</h5>
+                  <p class="card-text">Total:<span class="sum"></span> (Base:<span class="num1">{{realm.fk_realm.bonus_physic}} </span>+ Atributo:<span class="num2">{{atribute.AGI}}</span>)</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Constituição</h5>
+                  <p class="card-text">Total:<span class="sum"></span> (Base:<span class="num1">{{realm.fk_realm.bonus_physic}} </span>+ Atributo:<span class="num2">{{atribute.CON}}</span>)</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Res</h5>
+                  <p class="card-text">Total:<span class="sum"></span> (Base:<span class="num1">{{realm.fk_realm.bonus_physic}} </span>+ Atributo:<span class="num2">{{atribute.RES}}</span>)</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Percepção</h5>
+                  <p class="card-text">Total:<span class="sum"></span> (Base:<span class="num1">{{realm.fk_realm.bonus_spiritual}} </span>+ Atributo:<span class="num2">{{atribute.PERCEPTION}}</span>)</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Control</h5>
+                  <p class="card-text">Total:<span class="sum"></span> (Base:<span class="num1">{{realm.fk_realm.bonus_spiritual}} </span>+ Atributo:<span class="num2">{{atribute.CTL}}</span>)</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Ky</h5>
+                  <p class="card-text">{{atribute.KY}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+<div class="container">
+  <div class="card mb-4">
+    <div class="card-body">
+      <h1 class="card-title">Skills</h1>
+      <p><span class="small">
+        <a href="" class="a-link">
+        last time updated, page {{first_skill.page}}.
+      </a>
+      </span></p>
+        <div class="row">
+          {% for skill in skills %}
+          <div class="col-md-4">
+            <div class="card " style="max-width: 300px; min-width: 250px">
+              <div style="width: 128px; margin: 8px auto;">
+                <img class="my-3" src="{% static 'default/icons/beast/skill.png' %}" class="card-img-top" style="width: 128px; ">
+              </div>
+              <div class="card-body">
+                <h4 class="card-title "><a class="" href="{% url 'skill-edit' slug_book beast.slug skill.pk %}">
+                  {{skill.fk_skill.name}}
+                </a></h4>
+
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item bg-light"><span style="font-weight: bolder; text-transform: capitalize;">{{skill.fk_skill.rank}}</span> <span style="font-style: italic; ">{{skill.fk_skill.sub_rank}}</span></li>
+                  <li class="list-group-item" data-toggle="tooltip" data-placement="bottom" title="{{skill.mastery.description}}"> <span style="font-weight:500; text-transform: capitalize;"> {{skill.mastery.rank}}</span></li>
+                  <li class="list-group-item bg-light">{% for atributes in skill.fk_skill.atributes.all %} <span style="font-style: italic; font-weight: bolder;">
+                    {{atributes}} 
+                  </span>
+                    {% if atributes == skill.fk_skill.atributes.last %}
+                            .
+                        {% else %}
+                            ,
+                        {% endif %}
+                    
+                    {% endfor %}</li>
+                  <li class="list-group-item">page: {{skill.page}}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+            {% endfor %}
+        
+        </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="container">
+  <div class="card mb-4">
+    <div class="card-body">
+      <h2 class="card-title"><a href="{% url 'beastloot-add'  slug_book beast.beast.slug %}" style="text-decoration: none; color: black;">Loot</a></h2>
+    
+      <table class="table">
+        <thead>
+          <tr>
+            <th>name</th>
+            <th>description</th>
+            <th>value(silver coins)</th>
+            <th>kg</th>
+            <th>square meters</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for loot in beast.loots %}
+          <tr>
+            <td><a href="{% url 'beastloot-edit' slug_book beast.beast.slug loot.pk %}">
+              {{loot.fk_beast.name}}
+              </a>
+            </td>
+            <td data-toggle="tooltip" data-placement="bottom" title="{{loot.fk_loot.description}}">
+              {{loot.fk_loot.description}}
+              </td>
+              <td> {{loot.fk_loot.value}}</td>
+              <td>{{loot.qtd_kg}}</td>
+              <td>{{loot.qtd_meter}}</td>
+        
+          </tr>
+        
+          {% endfor %}
+        
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

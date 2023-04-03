@@ -24,4 +24,5 @@ urlpatterns = [
     path('',include('helper.urls')),        
     path('<slug:slug_book>/world/', include('geography.urls')),
     path('<slug:slug_book>/characters/', include('murim.urls')),
+    path('<slug:slug_book>/bestiary/', include('bestiary.urls')),
 ]+ static(settings.MEDIA_URL,   document_root=settings.MEDIA_ROOT)
