@@ -4,13 +4,18 @@
 
 {% block nav %}
 <li class="nav-item active">
-  <a class="nav-link" href="{% url 'character-list' slug_book %}">
-      ir para lista de Characters
+  <a class="nav-link" href="{% url 'beastiary-list' slug_book %}">
+      ir para lista de beast
   </a>
 </li>
 <li class="nav-item active">
-  <a class="nav-link" href="{% url 'character-murim-edit' slug_book character.slug %}">
-      Editar Character
+  <a class="nav-link" href="{% url 'beastiary-edit' slug_book beast.beast.slug %}">
+      Editar Beast
+  </a>
+</li>
+<li class="nav-item active">
+  <a class="nav-link" href="{% url 'beastloot-add' slug_book beast.beast.slug %}">
+      adicionar loot
   </a>
 </li>
 
@@ -22,19 +27,21 @@
 {% endblock %}
 
 {% block content%}
+
+
 <div class="container mt-4" >
   <div class="row">
     <div class="col-lg-4">
       <div class="card mb-4">
-        <img class="card-img-top" src="{{character.img.url}}" alt="Character Image">
+        <img class="card-img-top" src="{{ beast.beast.img.url }}" alt="Character Image">
         <div class="card-body">
-          <h2 class="card-title">{{character.name}}</h2>
-          <p class="card-text">{{character.alias}}</p>
+          <h2 class="card-title">{{beast.beast.name}}</h2>
         </div>
         <ul class="list-group list-group-flush">
-          <li class="list-group-item">Race: Human</li>
-          <li class="list-group-item"><a href="{% url 'realm-add' slug_book character.slug %}">Realm: {{realm.fk_realm.rank}} {{realm.rank}} </a></li>
-          <li class="list-group-item">status: {{character.alive}}</li>
+          <li class="list-group-item">Race: ? </li>
+          <li class="list-group-item">Realm: {{beast.beast.murim_realm.rank}}</li>
+          <li class="list-group-item">physic:0/{{beast.beast.murim_realm.limit_physic}} | espiritual: 0/{{beast.beast.murim_realm.limit_spiritual}}</li>
+          
         </ul>
 
       </div>
@@ -42,7 +49,7 @@
     <div class="col-lg-8">
       <h4 class="mb-4">Description</h4>
       <p>
-        {{character.description}}
+        {{beast.beast.description}}
       </p>
 
     </div>
@@ -52,33 +59,6 @@
 </div>
 </div>
 
-<div class="container">
-  <div class="card mb-4">
-    <div class="card-body"  data-toggle="tooltip" data-placement="bottom" title="{{first_proficience.fk_proficience.description}}">
-      <h1 class="card-title">Proficience</h1>
-      <p><span class="small">
-          <a href="{% url 'proficience-add'  slug_book character.slug %}" class="a-link">
-          atualizado na pagina {{first_proficience.page}}
-        </a>
-        </span></p>
-        <div class="row">
-
-         {% for proficience in proficiences %}
-            <div class="col-md-4 mb-4">
-              <div class="card">
-                <div class="card-body">
-                  <h2 class="card-title"><a href="{% url 'proficience-edit'  slug_book character.slug proficience.pk%}">
-                    {{proficience.weapon_id.weapon}} {{proficience.fk_proficience.rank}}
-                  </a></h2>
-                  <p class="card-text">level: {{proficience.level}}</p>
-                </div>
-              </div>
-            </div>
-          {% endfor %}
-        </div>
-      </div>
-    </div>
-  </div>
 
 
   <div class="container">
@@ -86,14 +66,12 @@
       <div class="card-body">
         <h1 class="card-title">Attributes</h1>
         <p><span class="small">
-          <a href="
-          {% if atribute %}
-                    {% url 'atribute-edit'  slug_book character.slug  realm.fk_realm.pk atribute.pk %}
-                    {% else %}
-                    {% url 'atribute-add'  slug_book character.slug  realm.fk_realm.pk  %}
-                    {% endif%}
-                    " class="a-link">
-                    atualizado na pagina {{atribute.page}}
+          {% if realm %}
+            <a href="
+            {% url 'atribute-add'  slug_book beast.slug  realm.fk_realm.pk atribute.pk %}
+            " class="a-link">
+            atualizado na pagina {{atribute.page}}
+            {% endif%}
           </a>
           </span></p>
           <div class="row">
@@ -176,7 +154,7 @@
     <div class="card-body">
       <h1 class="card-title">Skills</h1>
       <p><span class="small">
-        <a href="{% url 'skill-add'  slug_book character.slug %}" class="a-link">
+        <a href="" class="a-link">
         last time updated, page {{first_skill.page}}.
       </a>
       </span></p>
@@ -185,10 +163,10 @@
           <div class="col-md-4">
             <div class="card " style="max-width: 300px; min-width: 250px">
               <div style="width: 128px; margin: 8px auto;">
-                <img class="my-3" src="{% static 'default/icons/character/skill.png' %}" class="card-img-top" style="width: 128px; ">
+                <img class="my-3" src="{% static 'default/icons/beast/skill.png' %}" class="card-img-top" style="width: 128px; ">
               </div>
               <div class="card-body">
-                <h4 class="card-title "><a class="" href="{% url 'skill-edit' slug_book character.slug skill.pk %}">
+                <h4 class="card-title "><a class="" href="{% url 'skill-edit' slug_book beast.slug skill.pk %}">
                   {{skill.fk_skill.name}}
                 </a></h4>
 
@@ -222,29 +200,31 @@
 <div class="container">
   <div class="card mb-4">
     <div class="card-body">
-      <h2 class="card-title"><a href="{% url 'item-add' slug_book character.slug %}" style="text-decoration: none; color: black;">Inventary</a></h2>
-      <p class="card-text"><a href="{% url 'coin-add' slug_book character.slug %}">possui {{gold.value}} moedas de ouro</a></p>
+      <h2 class="card-title"><a href="{% url 'beastloot-add'  slug_book beast.beast.slug %}" style="text-decoration: none; color: black;">Loot</a></h2>
+    
       <table class="table">
         <thead>
           <tr>
             <th>name</th>
-            <th>item type</th>
             <th>description</th>
-            <th>page</th>
+            <th>value(silver coins)</th>
+            <th>kg</th>
+            <th>square meters</th>
           </tr>
         </thead>
         <tbody>
-          {% for item in itens %}
+          {% for loot in beast.loots %}
           <tr>
-            <td><a href="{% url 'item-edit' slug_book character.slug item.pk %}">
-                {{item.name}}
+            <td><a href="{% url 'beastloot-edit' slug_book beast.beast.slug loot.pk %}">
+              {{loot.fk_beast.name}}
               </a>
             </td>
-            <td>
-              {{item.fk_item_type.type}}
+            <td data-toggle="tooltip" data-placement="bottom" title="{{loot.fk_loot.description}}">
+              {{loot.fk_loot.description}}
               </td>
-              <td data-toggle="tooltip" data-placement="bottom" title="{{item.description}}">{{item.description}}</td>
-              <td>{{item.page}}</td>
+              <td> {{loot.fk_loot.value}}</td>
+              <td>{{loot.qtd_kg}}</td>
+              <td>{{loot.qtd_meter}}</td>
         
           </tr>
         

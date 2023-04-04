@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, DetailView, View, ListView, CreateView, UpdateView
+from django.views.generic import  DetailView, View, ListView, CreateView
 from bestiary.forms import LootForm, MonsterLootForm, magicbeast_form_type
 
 from bestiary.models import Loot, MagicBeast, MagicBeastLoot

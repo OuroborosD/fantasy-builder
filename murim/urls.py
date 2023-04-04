@@ -7,7 +7,8 @@ urlpatterns = [
  path('<slug:slug_character>/edit/', views.characterEdit.as_view(), name='character-murim-edit' ),
        
 #atribute
- path('<slug:slug_character>/atribute/add/<int:pk_realm>/<int:pk>', views.AtributeAd.as_view(), name='atribute-add' ),
+ path('<slug:slug_character>/atribute/add/<int:pk_realm>/', views.AtributeAdd.as_view(), name='atribute-add' ),
+ path('<slug:slug_character>/atribute/add/<int:pk_realm>/<int:pk>', views.AtributeEdit.as_view(), name='atribute-edit' ),
 
 #realm
  path('<slug:slug_character>/Realm/add/', views.RealmAdd.as_view(), name='realm-add' ),

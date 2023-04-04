@@ -24,6 +24,16 @@ class CharacterList(ListView):
             f'	linha 13-------arquivo: {self.kwargs["slug_book"]}------- valor:')
         context['slug_book'] = self.kwargs['slug_book']
         return context
+    
+    def get_queryset(self, **kwargs):
+       
+        character = Characters.objects.filter(fk_book__slug=self.kwargs['slug_book'])
+        print(f'	linha 31-------arquivo: {character}------- valor:')
+      
+        return {
+            'obj':character,
+        }
+
 
 
 class CharacterAdd(CreateView):
@@ -143,7 +153,7 @@ class characterEdit(View):
 
 ##################################         ######################################
 
-class AtributeAd(View):
+class AtributeEdit(View):
     def get(self, request, slug_book, slug_character, pk_realm, pk):
         atribute = Atribute.objects.get(pk=pk)
         form = AtributosForm(instance= atribute)
@@ -193,7 +203,6 @@ class AtributeAdd(CreateView):
     def get_context_data(self, **kwargs, ):
         context = super(AtributeAdd, self).get_context_data(**kwargs)
         print(f'	linha 149-------arquivo:   ------- valor:	')
-
         context['slug_book'] = self.kwargs['slug_book']
         context['slug_character'] = self.kwargs['slug_character']
 
@@ -213,7 +222,7 @@ class AtributeAdd(CreateView):
        
         self.object.fk_character = character
         print(f'	linha 37-------arquivo: {self.object.fk_character}------- valor:	')
-        #self.object.save()
+        self.object.save()
 
         return HttpResponseRedirect(self.get_success_url())
 

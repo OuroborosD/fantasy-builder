@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'character/css/form.css' %}">
+{% endblock css %}
+
+
+
+{% block content %}
+<h1>New post</h1>
+
+    <form action="" method="POST"  class="input-form" enctype="multipart/form-data">
+
+        {% csrf_token %}
+        {{ form}}
+
+
+        <button type="submit" value="Update">Create Character</button>
+    </form>
+
+
+
+{% endblock content %}

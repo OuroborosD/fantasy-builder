@@ -3,7 +3,7 @@ from django.utils.text import slugify
 from datetime import datetime
 
 
-from helper.models import Books
+from helper.models import Books, Rarity
 from murim.models import  Realms
 
 
@@ -32,6 +32,7 @@ class MagicBeast(models.Model):
 class Loot(models.Model):
     fk_book = models.ForeignKey(Books, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
+    rarity = models.ForeignKey(Rarity, on_delete=models.SET_NULL, null=True)
     description = models.TextField(default='N/A')
     value = models.FloatField(default=0)
     def __str__(self):

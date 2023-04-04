@@ -23,12 +23,7 @@ class SkillMastery(models.Model):
         return f'{self.rank} '
     
 
-class ItemType(models.Model):
-    type = models.CharField(max_length=50)
-    description = models.CharField(max_length=150, null=True, blank=True)
 
-    def __str__(self):
-        return f'{self.type}'
 
 
 ##############################Geography###################################################
@@ -112,3 +107,18 @@ class Books(models.Model):
         super().save(*args, **kwargs)
 
 
+
+###################### General #################################
+class ItemType(models.Model):
+    type = models.CharField(max_length=50)
+    description = models.CharField(max_length=150, null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.type}'
+
+
+class Rarity(models.Model):
+    rank = models.CharField(max_length=25)
+    description = models.TextField(default='N/A')
+    def __str__(self):
+        return f'{self.rank}'
